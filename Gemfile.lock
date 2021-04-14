@@ -253,11 +253,13 @@ DEPENDENCIES
   faraday (< 1.0)
   github-pages
   jekyll-feed (~> 0.12)
+  jekyll-github-metadata
   jekyll-octicons
   minima (~> 2.5)
+  minitest (~> 5.14)
   tzinfo (~> 1.2)
   tzinfo-data
   wdm (~> 0.1.1)
 
 BUNDLED WITH
-   2.1.4
+   2.2.15
