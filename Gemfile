@@ -34,3 +34,5 @@ gem "faraday", "< 1.0"
 
 
 gem "minitest", "~> 5.14"
+
+gem "webrick", "~> 1.7"

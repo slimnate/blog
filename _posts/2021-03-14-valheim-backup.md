@@ -1,3 +1,9 @@
+---
+layout: post
+title: Valheim Backup
+
+---
+
 # Valheim Backup
 One of the hosstest games on Steam since it's release [Valheim](https://store.steampowered.com/app/892970/Valheim/) has been an amazingly fun game to play. I noticed a lot of people on discord and forums talking about having lost data due to some bugs, and decided to do somethign about it.
 

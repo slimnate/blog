@@ -6,13 +6,22 @@ This repository contains my blog about Software Development, Machine Learning, a
 
 - Jupyter Notebooks for the blog: http://www.fast.ai/2020/01/20/nb2md/ 
 
+## Installation issues:
+### If issues with openssl on newer mac:
+[https://github.com/eventmachine/eventmachine/issues/932#issuecomment-743896890](https://github.com/eventmachine/eventmachine/issues/932#issuecomment-743896890)
+
+### If issues with ruby 3.0:
+Install 'webrick' gem, no longer included by default [https://github.com/jekyll/jekyll/issues/8523](https://github.com/jekyll/jekyll/issues/8523)
+
+`bundle add webrick`
+
+
 ## Layout
 **Files:**
 
 - Config: *_config.yml*
 - Homepage: *index.md*
 - Converter.ipydev
-
 
 **Folders:**
 
