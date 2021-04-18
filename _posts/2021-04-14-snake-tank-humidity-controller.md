@@ -1,4 +1,13 @@
-# Snake Tank Humidity Controller
+---
+title: Snake Tank Humidity Controller
+categories: [Projects]
+tags: [arduino, 3d printing, circuits, c++]
+pin: true
+---
+1. TOC
+{:toc}
+
+
 As the proud owner of two beautiful ball pythons, named **Drakho** and **Nina**, I know first hand how important it is to ensure they have the proper climate control to live happy and healthy lives. 
 
 This project is designed to automate control of their humidity and lighting.

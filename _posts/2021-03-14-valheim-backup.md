@@ -1,10 +1,11 @@
 ---
 title: Valheim Backup
-categories: [Software, Valheim Backup]
+categories: [Software]
 tags: [software, valheim, c#]
-toc: true
 pin: true
 ---
+1. TOC
+{:toc}
 
 # Valheim Backup
 
