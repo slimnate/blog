@@ -6,13 +6,32 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: Slim Nate - Blog
+title: Slim Nate
+tagline: Making Cool Stuff
 description: Slim Nate's blog, focused on software development, electrical engineering, and general maker stuff.
 github_username: slimnate
 
 # Email and twitter are optional:
 email: slimnatekc@gmail.com
 twitter_username: slimnatekc
+
+# Social info for default post author
+social:
+  # Change to your full name.
+  # It will be displayed as the default author of the posts and the copyright owner in the Footer
+  name: Nathan Hoyt
+  email: slimnatekc@gmail.com             # change to your email address
+  links:
+    # The first element serves as the copyright owner's link
+    - https://twitter.com/slimnatekc      # change to your twitter homepage
+    - https://github.com/slimnatekc       # change to your github homepage
+    # Uncomment below to add more social links
+    # - https://www.facebook.com/username
+    # - https://www.linkedin.com/in/username
+
+
+# the avatar on sidebar, support local or CORS resources
+avatar: https://cdn.jsdelivr.net/gh/cotes2020/chirpy-images/commons/avatar.jpg
 
 # Set this to true to get LaTeX math equation support
 use_math: true
@@ -21,7 +40,7 @@ use_math: true
 google_analytics:
 
 # Everything below here can be ignored, unless you want to change the theme entirely
-theme: minima
+theme: jekyll-theme-chirpy
 plugins:
   - jekyll-feed
   - jekyll-gist
@@ -41,3 +60,68 @@ kramdown:
   auto_ids: true
   hard_wrap: false
   syntax_highlighter: rouge
+
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+
+defaults:
+  -
+    scope:
+      path: ''          # An empty string here means all files in the project
+      type: posts
+    values:
+      layout: post
+      comments: true    # Enable comments in posts.
+      toc: true         # Display TOC column in posts.
+  -
+    scope:
+      path: _drafts
+    values:
+      comments: false
+  -
+    scope:
+      path: ''
+      type: tabs             # see `site.collections`
+    values:
+      layout: page
+      permalink: /:title/
+      dynamic_title: true    # Hide title in mobile screens.
+
+sass:
+  style: compressed
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: false
+  blanklines: false
+  ignore:
+    envs: [development]
+
+exclude:
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - '*.gem'
+  - '*.gemspec'
+  - tools
+  - docs
+  - README.md
+  - LICENSE
+  - gulpfile.js
+  - node_modules
+  - package.json
+  - package-lock.json
+
+jekyll-archives:
+  enabled: [categories, tags]
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /tags/:name/
+    category: /categories/:name/
