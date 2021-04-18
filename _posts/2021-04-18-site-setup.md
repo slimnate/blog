@@ -1,9 +1,16 @@
 ---
 title: Hosting a Blog with Jekyll and Github Pages
+description: This is a description
 categories: [Blogging, Tutorial]
 tags: [tutorial, jekyll, ruby]
 pin: true
+toc: true
 ---
+This is the story all about how, my blog got hosted online now - 
+I'd like to take a second just listen up, I'll tell ya how I became the host of a blog on github.
+
+(please ignore my terrible pardoy of the Fresh Prince theme song)
+
 1. TOC
 {:toc}
 
