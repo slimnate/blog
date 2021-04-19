@@ -12,9 +12,11 @@
 {% capture url %}/assets/stl/{{include.src}}{% endcapture %}
 
 {% capture style %}width: {{width}}px; height: {{height}}px;
--webkit-box-shadow: 3px 0px 10px 0px #000000; 
+-webkit-box-shadow: 3px 0px 10px 0px #000000;
 box-shadow: 3px 0px 10px 0px #000000;
 {% if include.extrastyle %}{{include.extrastyle}}{% endif %}
 {% endcapture %}
 
-<div class="3d-model col-12" data-src="{{url}}" style="{{style}}"></div>
+<div class="3d-model col-12" data-src="{{url}}" style="{{style}}">
+    
+</div>

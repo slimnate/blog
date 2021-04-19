@@ -47,6 +47,7 @@ plugins:
   - jekyll-octicons
   - jekyll-github-metadata
   - jekyll-seo-tag
+  - jekyll-avatar
 
 titles_from_headings:
   enabled:     false
@@ -99,7 +100,7 @@ compress_html:
   comments: all
   endings: all
   profile: false
-  blanklines: false
+  blanklines: true
   ignore:
     envs: [development]
 

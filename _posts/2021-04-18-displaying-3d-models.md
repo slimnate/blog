@@ -1,7 +1,7 @@
 ---
 title: Displaying 3D models in Jekyll blog
 categories: [Blogging, Tutorial]
-tags: [tutorial, jekyll, 3d-models]
+tags: [tutorial, jekyll, 3d models]
 pin: true
 ---
 1. TOC

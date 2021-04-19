@@ -1,7 +1,7 @@
 ---
 title: Snake Tank Humidity Controller
 categories: [Projects]
-tags: [arduino, 3d printing, circuits, c++]
+tags: [arduino, 3d printing, circuits, cpp]
 pin: true
 ---
 1. TOC
