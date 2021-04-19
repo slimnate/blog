@@ -43,13 +43,13 @@ Create a new folder `stl` inside of the `assets` folder, that will contain all o
 Now that we have the necessary javascript files in our assets, time to get started on modifying our [_includes](https://jekyllrb.com/docs/includes/). In Jekyll, includes are a way to insert content from another file into your pages using the [Liquid](https://jekyllrb.com/docs/liquid/) templating language. We are going to use this feature to create a custom include tag that will provide the properly formatted HTML to display our 3D file inside a markdown blog post (or anywhere on the site that has access to Liquid).
 
 ##### Import the main javascript library in html head tag
-First step in implementing the library is to make sure that the library is loaded in the HTMl document head. TO do this, we'll modify an existing includes file: `_includes/head.html`.  Add the following lines to the `<-- JavaScripts -->` section, just below the jquery script tag:
+First step in implementing the library is to make sure that the library is loaded in the HTMl document head. TO do this, we'll modify an existing includes file: `_includes/head.html`.  Add the following lines to the `<!-- JavaScripts --/>` section, just below the jquery script tag:
 
 
-```html
+{% highlight html linenos %}
   <script src="/assets/js/viewstl/stl_viewer.min.js"></script>
   <script src="/assets/js/viewstl/init.js"></script>
-```
+{% endhighlight %}
 
 ##### Create custom `_includes` tag
 Now that the library is imported on every page, it's time to set up the custom include tag. Create a new file, `_includes/stlviewer.html`, with the following content:
