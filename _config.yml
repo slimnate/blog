@@ -54,7 +54,6 @@ titles_from_headings:
   collections: true
 
 highlighter: rouge
-pygments: true
 markdown: kramdown
 kramdown:
   math_engine: katex
