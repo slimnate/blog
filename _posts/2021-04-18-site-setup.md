@@ -6,10 +6,10 @@ tags: [tutorial, jekyll, ruby]
 pin: true
 toc: true
 ---
-This is the story all about how, my blog got hosted online now - 
+This is a story all about how, my blog got hosted online now - 
 I'd like to take a second just listen up, I'll tell ya how I became the host of a blog on github.
 
-(please ignore my terrible pardoy of the Fresh Prince theme song)
+(please ignore my terrible parody of the Fresh Prince theme song)
 
 1. TOC
 {:toc}
@@ -33,7 +33,7 @@ Though the template form FastAI displayed properly when served by github pages, 
 After getting Jekyll to successfully build on my Macbook, I was looking for a way to spice up the default look and feel of the site. Reading through the Jekyll documentation on [themes](https://jekyllrb.com/docs/themes/) I came across the [chirpy](https://github.com/cotes2020/jekyll-theme-chirpy) theme, and decided that was the one for me.
 
 I followed the instructions in the theme's README to install it and it's dependencies. Unfortunately, since I was converting an existing project, not starting a new site from their template, I had to clone the theme repo and manually copy over all the necessary files to make it run:
-- everthing in the `_data`, `_includes`, `_layouts`, `_plugins`, `_posts`, `_sass`, `_tabs`, and `assets` folders
+- everything in the `_data`, `_includes`, `_layouts`, `_plugins`, `_posts`, `_sass`, `_tabs`, and `assets` folders
 - `404.html`
 - `app.js`
 - `feed.xml`
@@ -51,6 +51,6 @@ plugins:
   - jekyll-seo-tag
 ```
 
-After that, the build worked like a dream, and after a minute or two the Github Pages site was serving up a brand spankin new beautiful website: [slimnate.github.io](https://slimnate.github.io/)
+After that, the build worked like a dream, and after a minute or two the Github Pages site was serving up a beautiful brand spankin' new website: [slimnate.github.io](https://slimnate.github.io/)
 
 Hope you enjoyed this post and/or found it useful, be sure to check out some of my other posts below:
