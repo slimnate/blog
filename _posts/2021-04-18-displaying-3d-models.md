@@ -54,7 +54,7 @@ First step in implementing the library is to make sure that the library is loade
 ##### Create custom `_includes` tag
 Now that the library is imported on every page, it's time to set up the custom include tag. Create a new file, `_includes/stlviewer.html`, with the following content:
 
-{% highlight ruby linenos %}
+{% highlight rb linenos %}
 {% raw %}
 {% assign width=800 %}
 {% assign height=350 %}
@@ -76,6 +76,7 @@ box-shadow: 3px 0px 10px 0px #000000;
 {% endcapture %}
 
 <div class="3d-model col-12" data-src="{{url}}" style="{{style}}"></div>
+
 {% endraw %}
 {% endhighlight %}
 
@@ -83,7 +84,7 @@ Lines 1-10 initialize the sizing arguments provided to the include statement. Li
 
 Note that we use an HTML5 data-* attribute to store the source url on the element for our script to access in the next step. This new tag will be used like this:
 
-{% highlight ruby linenos %}
+{% highlight rb linenos %}
 {% raw %}
 {% include stlviewer.html src="Fan_Mount_v8.stl" width=500 height=300 extrastyle="" %}
 {% endraw %}
