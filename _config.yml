@@ -31,6 +31,10 @@ social:
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
 
+# Disqus
+disqus:
+  comments: true  # boolean type, the global switch for posts comments.
+  shortname: 'slimnate'    # Fill with your Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 # the avatar on sidebar, support local or CORS resources
 avatar: assets/img/favicons/ms-icon-310x310.png

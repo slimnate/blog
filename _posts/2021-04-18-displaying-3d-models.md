@@ -75,9 +75,7 @@ box-shadow: 3px 0px 10px 0px #000000;
 {% if include.extrastyle %}{{include.extrastyle}}{% endif %}
 {% endcapture %}
 
-<div class="3d-model col-12" data-src="{{url}}" style="{{style}}"></div>
-
-{% endraw %}
+<div class="3d-model col-12" data-src="{{url}}" style="{{style}}"></div>{% endraw %}
 ```
 
 Lines 1-10 initialize the sizing arguments provided to the include statement. Line 12 initializes the src argument. Lines 14-18 initialize the style string for the element. Line 20 outputs the actual element.
@@ -86,8 +84,7 @@ Note that we use an HTML5 data-* attribute to store the source url on the elemen
 
 ```ruby
 {% raw %}
-{% include stlviewer.html src="Fan_Mount_v8.stl" width=500 height=300 extrastyle="" %}
-{% endraw %}
+{% include stlviewer.html src="Fan_Mount_v8.stl" width=500 height=300 extrastyle="" %}{% endraw %}
 ```
 
 _Note, the path provided to the `src` argument is relative to the `assets/stl` directory, so you only need to provide the file name. The above example would give an element with the attribute `data-src="assets/stl/3d-file.stl"`. The `extrastyle` attribute allows for adding additional custom styling to the element. Be sure this is properly formatted with unit labels and semi-colons where necessary to avoid issues._
