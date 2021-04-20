@@ -46,15 +46,15 @@ Now that we have the necessary javascript files in our assets, time to get start
 First step in implementing the library is to make sure that the library is loaded in the HTMl document head. TO do this, we'll modify an existing includes file: `_includes/head.html`.  Add the following lines to the `<!-- JavaScripts --/>` section, just below the jquery script tag:
 
 
-{% highlight html linenos %}
+```html
   <script src="/assets/js/viewstl/stl_viewer.min.js"></script>
   <script src="/assets/js/viewstl/init.js"></script>
-{% endhighlight %}
+```
 
 ##### Create custom `_includes` tag
 Now that the library is imported on every page, it's time to set up the custom include tag. Create a new file, `_includes/stlviewer.html`, with the following content:
 
-{% highlight rb linenos %}
+```ruby
 {% raw %}
 {% assign width=800 %}
 {% assign height=350 %}
@@ -78,17 +78,17 @@ box-shadow: 3px 0px 10px 0px #000000;
 <div class="3d-model col-12" data-src="{{url}}" style="{{style}}"></div>
 
 {% endraw %}
-{% endhighlight %}
+```
 
 Lines 1-10 initialize the sizing arguments provided to the include statement. Line 12 initializes the src argument. Lines 14-18 initialize the style string for the element. Line 20 outputs the actual element.
 
 Note that we use an HTML5 data-* attribute to store the source url on the element for our script to access in the next step. This new tag will be used like this:
 
-{% highlight rb linenos %}
+```ruby
 {% raw %}
 {% include stlviewer.html src="Fan_Mount_v8.stl" width=500 height=300 extrastyle="" %}
 {% endraw %}
-{% endhighlight %}
+```
 
 _Note, the path provided to the `src` argument is relative to the `assets/stl` directory, so you only need to provide the file name. The above example would give an element with the attribute `data-src="assets/stl/3d-file.stl"`. The `extrastyle` attribute allows for adding additional custom styling to the element. Be sure this is properly formatted with unit labels and semi-colons where necessary to avoid issues._
 
@@ -97,7 +97,7 @@ Next we need to add some javascript code to read in the file and initialize the 
 
 Create a new file `assets/js/viewstl/init.js` with the following contents:
 
-{% highlight javascript linenos %}
+```js
 function initStlViewer() {
     //get each 3d-model element on the page
     var $modelElements = $("div.3d-model");
@@ -111,7 +111,7 @@ function initStlViewer() {
 }
 
 $().ready(initStlViewer);
-{% endhighlight %}
+```
 
 ### Final thoughts
 The process of implementing a custom include tag and script in Jekyll has been very beneficial and allowed me to learn a lot about how the Jekyll framework operates, and how to customize it. The [viewstl documentation](https://www.viewstl.com/plugin/) lists many other available methods with the viewer, so some future improvements would be to add additional functionality such as control buttons, animations, colors, wireframe view, etc to the viewer

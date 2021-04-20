@@ -9,11 +9,14 @@
 title: Slim Nate
 tagline: Making Cool Stuff
 description: Slim Nate's blog, focused on software development, electrical engineering, and general maker stuff.
-github_username: slimnate
 
-# Email and twitter are optional:
+baseurl: ''
+
 email: slimnatekc@gmail.com
-twitter_username: slimnatekc
+github:
+  username: slimnate
+twitter:
+  username: slimnatekc
 
 # Social info for default post author
 social:
@@ -33,11 +36,17 @@ social:
 # the avatar on sidebar, support local or CORS resources
 avatar: assets/img/favicons/ms-icon-310x310.png
 
-# Set this to true to get LaTeX math equation support
-use_math: true
-
 # Add your Google Analytics ID here if you have one and want to use it
 google_analytics:
+  id: '' # Fill with your Google Analytics ID
+  pv:
+    # The Google Analytics pageviews switch.
+    # DO NOT enable it unless you know how to deploy the Google Analytics superProxy.
+    enabled: false
+    # the next options only valid when `google_analytics.pv` is enabled.
+    proxy_url: ''
+    proxy_endpoint: ''
+    cache: false  # pv data local cache, good for the users from GFW area.
 
 # Everything below here can be ignored, unless you want to change the theme entirely
 theme: jekyll-theme-chirpy
@@ -49,19 +58,24 @@ plugins:
   - jekyll-seo-tag
   - jekyll-avatar
 
+#global switch for table of contents
+toc: true
+
 titles_from_headings:
   enabled:     false
   strip_title: false
   collections: true
 
-highlighter: rouge
-markdown: kramdown
 kramdown:
-  math_engine: katex
-  input: GFM
-  auto_ids: true
-  hard_wrap: false
   syntax_highlighter: rouge
+  syntax_highlighter_opts:   # Rouge Options › https://github.com/jneen/rouge#full-options
+    css_class: highlight
+    # default_lang: console
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
 
 collections:
   tabs:
