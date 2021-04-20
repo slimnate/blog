@@ -10,6 +10,7 @@ title: Slim Nate
 tagline: Making Cool Stuff
 description: Slim Nate's blog, focused on software development, electrical engineering, and general maker stuff.
 
+theme: jekyll-theme-chirpy
 baseurl: ''
 
 email: slimnatekc@gmail.com
