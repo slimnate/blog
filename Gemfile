@@ -9,7 +9,7 @@ source "https://rubygems.org"
 # Happy Jekylling!
 gem "jekyll"
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
-# gem "minima"
+gem "minima"
 gem "jekyll-theme-chirpy"
 # To upgrade, run `bundle update github-pages`.
 # If you have any plugins, put them here!

@@ -14,10 +14,8 @@ theme: jekyll-theme-chirpy
 baseurl: ''
 
 email: slimnatekc@gmail.com
-github:
-  username: slimnate
-twitter:
-  username: slimnatekc
+github_username: slimnate
+twitter_username: slimnatekc
 
 # Social info for default post author
 social:
@@ -50,7 +48,7 @@ google_analytics:
     cache: false  # pv data local cache, good for the users from GFW area.
 
 # Everything below here can be ignored, unless you want to change the theme entirely
-remote_theme: cotes2020/jekyll-theme-chirpy
+# remote_theme: cotes2020/jekyll-theme-chirpy
 plugins:
   - jekyll-feed
   - jekyll-gist
@@ -67,6 +65,11 @@ titles_from_headings:
   strip_title: false
   collections: true
 
+# LaTeX math equation support
+use-math: true
+
+highlighter: rogue
+markdown: kramdown
 kramdown:
   syntax_highlighter: rouge
   syntax_highlighter_opts:   # Rouge Options › https://github.com/jneen/rouge#full-options
@@ -75,7 +78,7 @@ kramdown:
     span:
       line_numbers: false
     block:
-      line_numbers: false
+      line_numbers: true
       start_line: 1
 
 collections:
@@ -115,7 +118,7 @@ compress_html:
   comments: all
   endings: all
   profile: false
-  blanklines: true
+  blanklines: false
   ignore:
     envs: [development]
 
