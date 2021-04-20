@@ -49,7 +49,7 @@ google_analytics:
     cache: false  # pv data local cache, good for the users from GFW area.
 
 # Everything below here can be ignored, unless you want to change the theme entirely
-theme: jekyll-theme-chirpy
+remote_theme: cotes2020/jekyll-theme-chirpy
 plugins:
   - jekyll-feed
   - jekyll-gist
