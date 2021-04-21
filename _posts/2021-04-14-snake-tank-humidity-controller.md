@@ -1,16 +1,15 @@
 ---
 title: Snake Tank Humidity Controller
-categories: [Projects]
-tags: [arduino, 3d printing, circuits, cpp]
+categories: [Snake Tank Controller]
+tags: [arduino, 3d printing, electronics, cpp]
 pin: true
 ---
+As the proud owner of two beautiful ball pythons, named **Drakho** and **Nina**, I know first hand how important it is to ensure they have the proper climate control for their environment to live happy and healthy lives.
+
+This project is designed to automate control of their humidity and lighting system.
+
 1. TOC
 {:toc}
-
-
-As the proud owner of two beautiful ball pythons, named **Drakho** and **Nina**, I know first hand how important it is to ensure they have the proper climate control to live happy and healthy lives. 
-
-This project is designed to automate control of their humidity and lighting.
 
 ## Goals
 - Automated humidity control
@@ -44,6 +43,8 @@ The first major design goal was to determine the best method for monitoring and 
 For the humidity monitoring, I chose a [DHT-22](https://www.amazon.com/gp/product/B07XBVR532) temperature and humidity sensor combo (DHT-11 can also be used and is slightly cheaper, but the DHT-22 is more accurate)
 
 For humidifier system I chose to use an [ultrasonic transducer](https://www.amazon.com/gp/product/B08GQT43W7) to create humid air, with 1 1/2 inch sump pump drain hoses and 40mm PC fans to push the humid air to each tank.
+
+For details on how I designed the humidifier system, check out my article [Snake Tank Controller - Designing the humidifier system]({% post_url 2021-04-14-humidifier-system-design %})
 
 ### Light control system
 The second design objective was to create an AC outlet box that can be switched by an arduino. To achieve this, I use a standard 2-gang outlet box with two outlets and two [relays](https://www.amazon.com/gp/product/B00LW15A4W) to control each outlet separately. The relays are wired in series with the hot wire of the standard residential 120V AC line voltage inside the box.
