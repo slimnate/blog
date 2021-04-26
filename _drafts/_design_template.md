@@ -4,6 +4,7 @@ date: 2021-04-01 12:00:00 -0500
 categories: [Blogging]
 tags: [template]
 mermaid: true # enable mermaid charts
+pin: false
 image: # article header image
   src: /assets/img/
 ---
@@ -32,23 +33,23 @@ Discuss some options for how to go about solving the problem, and their various 
 ## Part 1
 First major component
 
-### Step 1
-### Step 2
-### Step 3
+#### Step 1
+#### Step 2
+#### Step 3
 
 ## Part 2
 Second major component
 
-### Step 1
-### Step 2
-### Step 3
+#### Step 1
+#### Step 2
+#### Step 3
 
 ## Part 3
 Third major component
 
-### Step 1
-### Step 2
-### Step 3
+#### Step 1
+#### Step 2
+#### Step 3
 
 .
 .

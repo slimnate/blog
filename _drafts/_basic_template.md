@@ -4,6 +4,7 @@ date: 2021-04-01 12:00:00 -0500
 categories: [Blogging]
 tags: [template]
 mermaid: true # enable mermaid charts
+pin: false
 image: # article header image
   src: /assets/img
 ---
