@@ -1,5 +1,5 @@
 ---
-title: Snake Tank Humidity Controller
+title: Project - Snake Tank Humidity Controller
 categories: [Snake Tank Controller]
 tags: [arduino, 3d printing, electronics, cpp]
 pin: true
@@ -40,14 +40,16 @@ There are several main sub-components of the project that each need to be design
 ### Humidifier system
 The first major design goal was to determine the best method for monitoring and providing humidity to the tanks.
 
-For the humidity monitoring, I chose a [DHT-22](https://www.amazon.com/gp/product/B07XBVR532) temperature and humidity sensor combo (DHT-11 can also be used and is slightly cheaper, but the DHT-22 is more accurate)
+For the humidity monitoring, I chose a [DHT-22](https://amzn.to/3tBzmjA) temperature and humidity sensor combo ([DHT-11](https://amzn.to/2Pa2zmK) can also be used and is slightly cheaper, but the DHT-22 is more accurate)
 
-For humidifier system I chose to use an [ultrasonic transducer](https://www.amazon.com/gp/product/B08GQT43W7) to create humid air, with 1 1/2 inch sump pump drain hoses and 40mm PC fans to push the humid air to each tank.
+For humidifier system I chose to use an [ultrasonic transducer](https://amzn.to/2QNdVO8) to create humid air, with 1 1/2 inch sump pump drain hoses and 40mm PC fans to push the humid air to each tank.
 
-For details on how I designed the humidifier system, check out my article [Snake Tank Controller - Designing the humidifier system]({% post_url 2021-04-14-humidifier-system-design %})
+For details on how I designed the humidifier system, check out this article: [Snake Tank Pt. 1 - Humidifier System]({% post_url 2021-04-14-snake-tank-humidifier %})
 
 ### Light control system
 The second design objective was to create an AC outlet box that can be switched by an arduino. To achieve this, I use a standard 2-gang outlet box with two outlets and two [relays](https://www.amazon.com/gp/product/B00LW15A4W) to control each outlet separately. The relays are wired in series with the hot wire of the standard residential 120V AC line voltage inside the box.
+
+For details on the design and build of the light control box, check out this article: [Snake Tank Pt. 2 - Light Controller System]({% post_url 2021-04-14-snake-tank-light-controller %})
 
 ### Arduino and control system
 For the microcontroller I chose an [Arduino Nano33 IoT](https://store.arduino.cc/usa/nano-33-iot) for it's built in bluetooth and wifi modules. I need a total of 6 digital I/O pins (2 input for humidity sensors, 2 output for light relays, and 2 output for humidifier control), which is more than covered by the Nano33's 13 digital I/O pins.
