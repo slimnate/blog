@@ -72,7 +72,7 @@ titles_from_headings:
 # LaTeX math equation support
 use-math: true
 
-highlighter: rogue
+highlighter: rouge
 markdown: kramdown
 kramdown:
   syntax_highlighter: rouge
