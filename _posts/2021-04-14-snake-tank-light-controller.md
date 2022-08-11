@@ -5,7 +5,7 @@ tags: [arduino, electronics]
 mermaid: true # enable mermaid charts
 pin: false
 image: # article header image
-  src: /assets/img/
+  src: /assets/img/header-light-system.png
 ---
 
 This article covers the design and construction of the automated Light control system for my [Snake Tank Humidifier]({% post_url 2021-04-14-snake-tank-humidity-controller %}) project.
@@ -21,8 +21,6 @@ I wanted to design something that could improve on the current day/night timers 
 - Two separate outlets connected to AC line voltage, one for day and one for night.
 - Each outlet needs two plugs (one for each tank)
 - Each outlet needs to be able to be independently switched off/on by an arduino microcontroller.
-
-## Background
 
 # How?
 
@@ -52,7 +50,8 @@ So the basic design is a custom outlet box with two separate outlets, each switc
 - [Hot glue gun](https://amzn.to/3dE4klC)
 - [Drill and bit set](https://amzn.to/3dD5zRW) one with 1/4 in, and one with size matching your power cable diameter.
 - [Screwdrivers](https://amzn.to/3tGSxbS)
-- [Multimeter]()/Continuity Tester
+- [Multimeter/Continuity Tester](https://amzn.to/3uolZDF)
+- [Soldering Iron](https://amzn.to/3h7oeaX)
 
 ## Prepping the gang box
 The first step is to gather components and prepare the gang box for wiring. We need one hole for the main power cable, and two more for each of the relays control wires
@@ -72,7 +71,7 @@ Here is the wiring diagram that will be referred to throughout the rest of the w
 [![Internal outlet wiring diagram](/assets/img/humidifier/light-wiring-diagram.png){: width="800"}](/assets/img/humidifier/light-wiring-diagram.png)
 
 #### Harvest wire from power cord (optional)
-If you decide to harvest the outlet wiring from your power cord like I did, cut off a length of about 1-1 1/2 ft. of wire from the end of the cable and remove all of the outer insulation so you're left with three individual strands of wire. If you're using separate wire for inside the gang box, skip this step.
+If you decide to harvest the outlet wiring from an old power cord like I did, cut off a length of about 1-1 1/2 ft. of wire from the end of the cable and remove all of the outer insulation so you're left with three individual strands of wire. If you're using separate wire for inside the gang box, skip this step.
 
 #### AC wiring to relays
 First, we'll wire up the power cord to the outlets, using the relays to break the "hot" wire to the outlets. As a safety rule for AC and other high voltage circuits, you should always switch the "hot" wire (for more info on why, check out [this article](https://www.allaboutcircuits.com/textbook/direct-current/chpt-3/safe-circuit-design/) from allaboutcircuits.com). Each outlet will have a common ground and neutral connection, and separate hot connections switched by each relay. We'll use the normally open ports of the relay to ensure that we have to actively turn on the outlets, rather than having them be on by default.
@@ -84,8 +83,18 @@ Next we have to wire up the relays in series with the hot wire to each outlet. S
 #### Relay control wires
 Next we need to connect some wires to the DC control terminals of each relay that route outside the box to connect to the arduino. I try to follow a somewhat standard coloring system for my DC circuits, in this case it's red for DC+, black for DC-, and yellow for control/signal voltages. Simply cut 2 lengths of each color, connect them to the respective terminals on the relays: red for the "DC+", black for the "DC-", and yellow for the "IN" terminal. Feed the 3 wires from each relay out a separate one of the 1/4 in. holes drilled previously.
 
+We'll need to use another length of the 4 conductor cable and a 4-pin JST connector to create a wire that plugs into our main circuit board. One end of the cable will connect to the relay wires coming from the box, and the other end will have a 4-pin JST connector attached to it.
+
+![Finished light controller box - 1](/assets/img/humidifier/light-controller-jst-connector.png)
+
+The red cable strand is connected to both of the positive (red) relay control wires, the black strand to both negative (black) control wires, and the green and white strands each connected to a separate input (yellow) relay control wire.
+
 ## Finish assembly
 Now that all the internal wiring for the light controller is completed, it's time to put everything together and test. Start by securing the relays to the side of the gang box using some hot glue. Be sure to test the fit of the relay with both outlets in position before using glue, to avoid any fitment issues with them. Once the glue dries, make sure any loose wiring is stuffed down in the box out of the way, and screw each of the outlets into the screw holes on the gang box. Finally, screw the outlet cover in place to complete the assembly of the outlet box.
+
+![Finished light controller box - 1](/assets/img/humidifier/light-controller-final-1.png)
+![Finished light controller box - 2](/assets/img/humidifier/light-controller-final-2.png)
+![Finished light controller box - 3](/assets/img/humidifier/light-controller-final-3.png)
 
 ## Testing
 To test the lights, I connected an arduino nano into a breadbord, and connected the + and - wires to the 5V and GND terminals on the arduino respectively, and plugged a lamp into one of the outlets. Touch the control wire for that outlet to the 5V terminal and ensure that the lamp turns on. Repeat the same with the other outlet, touching it's control wire to see if it turns on the lamp.
@@ -96,4 +105,4 @@ To test the lights, I connected an arduino nano into a breadbord, and connected 
 
 # Final thoughts
 
-That's it for the light controller. Hopefully you found this informative or useful, let me know if the comments below, and be sure to check out some of my other articles. In the next section of this project, we'll cover the design and construction of the main circuit board for the humidity controller system.
+That's it for the light controller. In the next section of this project, we'll cover the design and construction of the main circuit board for the humidity controller system. Hopefully you found this informative or useful, let me know if the comments below, and be sure to check out some of my other articles.

@@ -26,6 +26,7 @@ gem "kramdown-math-katex"
 gem "faraday", "< 1.0"
 gem "minitest", "~> 5.14"
 gem "webrick", "~> 1.7"
+gem "open-uri"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
