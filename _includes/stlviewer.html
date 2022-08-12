@@ -1,5 +1,8 @@
 {% assign width=800 %}
 {% assign height=350 %}
+{% assign color='' %}
+{% assign bg='' %}
+{% assign orientation='iso' %}
 
 {% if include.width %}
 {% assign width = include.width %}
@@ -7,6 +10,18 @@
 
 {% if include.height %}
 {% assign height = include.height %}
+{% endif %}
+
+{% if include.color %}
+{% assign color = include.color %}
+{% endif %}
+
+{% if include.bg %}
+{% assign bg = include.bg %}
+{% endif %}
+
+{% if include.orientation %}
+{% assign orientation = include.orientation %}
 {% endif %}
 
 {% capture url %}/assets/stl/{{include.src}}{% endcapture %}
@@ -17,6 +32,6 @@ box-shadow: 3px 0px 10px 0px #000000;
 {% if include.extrastyle %}{{include.extrastyle}}{% endif %}
 {% endcapture %}
 
-<div class="3d-model col-12" data-src="{{url}}" style="{{style}}">
+<div class="3d-model col-12" data-src="{{url}}" data-color="{{color}}" data-bg="{{bg}}" data-orientation="{{orientation}}" style="{{style}}">
     
 </div>
