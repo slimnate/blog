@@ -1,5 +1,6 @@
 ---
 title: Snake Tank Pt. 4 - Embedded Software
+date: 2021-04-14 12:04:00 -0500
 categories: [Snake Tank Controller]
 tags: [arduino, programming, cpp]
 math: true

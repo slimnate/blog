@@ -1,5 +1,6 @@
 ---
 title: Snake Tank Pt. 2 - Light Controller System
+date: 2021-04-14 12:02:00 -0500
 categories: [Snake Tank Controller]
 tags: [arduino, electronics]
 mermaid: true # enable mermaid charts
