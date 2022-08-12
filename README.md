@@ -1,6 +1,6 @@
 # My Blog
 
-Welcome! Visit the blog here: https://slimnate.github.io/
+Welcome! Visit the blog here: https://slimnate.com/
 
 This repository contains my blog about Software Development, Machine Learning, and other interestes of mine.
 
