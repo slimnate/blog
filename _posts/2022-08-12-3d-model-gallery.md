@@ -14,84 +14,26 @@ This article is a simple gallery of the various 3D Models I have designed, most 
 1. TOC
 {:toc}
 
-# Project: Snake Tank Humidifier
+# Project: Snake Tank Humidity Controller
+![Snake Tank Humidifier Header](/assets/img/3d-model-gallery/header.png)
 
-#### Part: 40mm Fan
+View Gallery: [Gallery]({% post_url 2022-08-12-3dm-sthc %})
 
-{% include stlviewer.html src="40mm_Fan_v3.stl" %}
-
-#### Part: Circuit Box - Base
-
-{% include stlviewer.html src="CircuitBox_base_v10.stl" %}
-
-#### Part: Circuit Box - Cover
-
-{% include stlviewer.html src="CircuitBox_cover_v10.stl" %}
-
-#### Part: Circuit Box - Assembly
-
-{% include stlviewer.html src="CircuitBox_v9.stl" %}
-
-#### Part: Fan Mount
-
-{% include stlviewer.html src="Fan_Mount_v8.stl" %}
-
-#### Part: Fan Mount Base Plate
-
-{% include stlviewer.html src="Fan_Mount_Plate_v8.stl" %}
-
-#### Part: Power Plug Housing
-
-{% include stlviewer.html src="Power_Plug_Housing_v2.stl" %}
-
-{% include stlviewer.html src="Power_Plug_Housing_v4_with_plug.stl" %}
-
-#### Part: Full Assembly
-
-{% include stlviewer.html src="Full_Assembly_v6.stl" %}
-
-#### Part: Tank Hose Mount - Bracket
-
-{% include stlviewer.html src="TankHoseMount_bracket_v11.stl" %}
-
-#### Part: Tank Hose Mount - Slider
-
-{% include stlviewer.html src="TankHoseMount_slider_v8.stl" %}
-
-#### Part: Tank Hose Mount - Assembly
-
-{% include stlviewer.html src="Tank_Hose_Mount_v3.stl" %}
+Project Page: [Project: Snake Tank Humidity Controller]({% post_url 2021-04-14-snake-tank-humidity-controller %})
 
 # Project: Snake Shelf
+![Snake Shelf Header](/assets/img/3d-model-gallery/header-shelf.png)
 
-#### Part: Frame
+View Gallery: [Gallery]({% post_url 2022-08-12-3dm-snake-shelf %})
 
-{% include stlviewer.html src="Snake_Shelf_Frame_Bare.stl" %}
-
-#### Part: Shelf - No Tanks
-
-{% include stlviewer.html src="Snake_Shelf_Frame.stl" %}
-
-#### Part: Shelf - With Tanks
-
-{% include stlviewer.html src="Snake_Shelf_Frame_Tank.stl" %}
+Project Page: [Project: Snake Shelf]({% post_url 2022-08-10-snake-shelf %})
 
 # Project: Bartending Tool Holder
+![Bartending Tool Holder Header](/assets/img/3d-model-gallery/header-bar-tool-holder.png)
 
-#### Part: Pen holder
-
-{% include stlviewer.html src="JS_pen_holder_v10.stl" %}
-
-#### Part: Notebook/Tool Holder
-
-{% include stlviewer.html src="JS_Notebook_and_tool_holder v4.stl" %}
+View Gallery: [Gallery]({% post_url 2022-08-12-3dm-bar-tool-holder %})
 
 # Project: Clipper Guard Holder
+![Clipper Guard Holder Header](/assets/img/3d-model-gallery/header-cgh.png)
 
-#### Part: Base
-
-{% include stlviewer.html src="clipper_guard_holder_base_v2.stl" %}
-
-#### Part: Guard Holder
-
-{% include stlviewer.html src="clipper_guard_holder_v2.stl" %}
+View Gallery: [Gallery]({% post_url 2022-08-12-3dm-clipper-guard-holder %})
