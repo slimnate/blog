@@ -1,7 +1,7 @@
 ---
 title: Snake Tank Pt. 3 - Motherboard
 date: 2021-04-14 12:03:00 -0500
-categories: [Snake Tank Controller]
+categories: [Projects]
 tags: [arduino, electronics]
 math: true
 mermaid: false # enable mermaid charts

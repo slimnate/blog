@@ -1,7 +1,7 @@
 ---
 title: Snake Tank Pt. 1 - Humidifier System
 date: 2021-04-14 12:01:00 -0500
-categories: [Snake Tank Controller]
+categories: [Projects]
 tags: [arduino, 3d printing, electronics]
 mermaid: true # enable mermaid charts
 pin: false

@@ -1,7 +1,7 @@
 ---
 title: Project - Snake Tank Humidity Controller
 date: 2021-04-14 12:00:00 -0500
-categories: [Snake Tank Controller]
+categories: [Projects]
 tags: [arduino, 3d printing, electronics, cpp]
 image:
   src: /assets/img/humidifier/header-main.png
