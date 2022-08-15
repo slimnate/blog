@@ -6,7 +6,7 @@ tags: [3d models, 3d printing, gallery, portfolio]
 mermaid: true # enable mermaid charts
 pin: false
 image: # article header image
-  src: /assets/img/3d-model-gallery/header-cgh.png.png
+  src: /assets/img/3d-model-gallery/header-cgh.png
 ---
 
 3D Model Gallery page for [Snake Tank Humidity Controller]({ post_url 2021-04-14-snake-tank-humidity-controller }) project
