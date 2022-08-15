@@ -17,12 +17,9 @@ function initStlViewer() {
         var color = $(elem).data('color').trim();
         var bg = $(elem).data('bg').trim();
         var orientation = $(elem).data('orientation');
+        var viewEdges = $(elem).data('edges');
+        var display = $(elem).data('display');
         var viewer;
-
-        console.log('Initing 3D File: ' + filePath);
-        console.log('color: ' + color);
-        console.log('bg: ' + bg);
-        console.log('orientation: ' + orientation);
 
         // Callback to update custom data params after models load
         var models_loaded = function(id) {
@@ -52,6 +49,13 @@ function initStlViewer() {
             }
         }
 
+        console.log('Initing 3D File: ' + filePath);
+        console.log('color: ' + color);
+        console.log('bg: ' + bg);
+        console.log('orientation: ' + orientation);
+        console.log('edges:' + viewEdges);
+        console.log('display: ' + display);
+
         //create new viewer
         viewer = new StlViewer(elem,
             {
@@ -61,8 +65,8 @@ function initStlViewer() {
                         id: 1,
                         filename: filePath,
                         color: color,
-                        view_edges: true,
-                        display: 'smooth',
+                        view_edges: viewEdges,
+                        display: display,
                         rotationx: r_x,
                         rotationy: r_y,
                         rotationz: r_z,

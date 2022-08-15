@@ -3,6 +3,8 @@
 {% assign color='' %}
 {% assign bg='' %}
 {% assign orientation='iso' %}
+{% assign edges='false' %}
+{% assign display='flat' %}
 
 {% if include.width %}
 {% assign width = include.width %}
@@ -24,6 +26,14 @@
 {% assign orientation = include.orientation %}
 {% endif %}
 
+{% if include.edges %}
+{% assign edges = include.edges %}
+{% endif %}
+
+{% if include.display %}
+{% assign display = include.display %}
+{% endif %}
+
 {% capture url %}/assets/stl/{{include.src}}{% endcapture %}
 
 {% capture style %}width: {{width}}px; height: {{height}}px;
@@ -32,6 +42,6 @@ box-shadow: 3px 0px 10px 0px #000000;
 {% if include.extrastyle %}{{include.extrastyle}}{% endif %}
 {% endcapture %}
 
-<div class="3d-model col-12" data-src="{{url}}" data-color="{{color}}" data-bg="{{bg}}" data-orientation="{{orientation}}" style="{{style}}">
+<div class="3d-model col-12" data-src="{{url}}" data-color="{{color}}" data-bg="{{bg}}" data-orientation="{{orientation}}" data-edges="{{edges}}" data-display="{{display}}" style="{{style}}">
     
 </div>
