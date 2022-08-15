@@ -18,12 +18,12 @@ image: # article header image
 
 #### Part: Frame
 
-{% include stlviewer.html src="Snake_Shelf_Frame_Bare.stl" %}
+{% include stlviewer.html src="Snake_Shelf_Frame_Bare.stl" edges="true" height="500" %}
 
 #### Part: Shelf - No Tanks
 
-{% include stlviewer.html src="Snake_Shelf_Frame.stl" %}
+{% include stlviewer.html src="Snake_Shelf_Frame.stl" edges="true" height="500" %}
 
 #### Part: Shelf - With Tanks
 
-{% include stlviewer.html src="Snake_Shelf_Frame_Tank.stl" %}
+{% include stlviewer.html src="Snake_Shelf_Frame_Tank.stl" edges="true" height="500" %}

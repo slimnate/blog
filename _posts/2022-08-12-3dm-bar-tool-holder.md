@@ -18,8 +18,8 @@ image: # article header image
 
 #### Part: Pen holder
 
-{% include stlviewer.html src="JS_pen_holder_v10.stl" %}
+{% include stlviewer.html src="JS_pen_holder_v10.stl" height="500" %}
 
 #### Part: Notebook/Tool Holder
 
-{% include stlviewer.html src="JS_Notebook_and_tool_holder v4.stl" %}
+{% include stlviewer.html src="JS_Notebook_and_tool_holder v4.stl" height="500" %}
