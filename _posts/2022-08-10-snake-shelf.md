@@ -1,7 +1,7 @@
 ---
 title: Snake Shelf
 date: 2022-08-10 12:00:00 -0500
-categories: [Projects, Snake Shelf]
+categories: [Projects]
 tags: [Woodworking, CAD, Fusion 360]
 mermaid: true # enable mermaid charts
 pin: false
