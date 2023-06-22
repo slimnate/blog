@@ -42,7 +42,7 @@ avatar: assets/img/favicons/ms-icon-310x310.png
 
 # Add your Google Analytics ID here if you have one and want to use it
 google_analytics:
-  id: '' # Fill with your Google Analytics ID
+  id: 'G-JFS669PSEV' # Fill with your Google Analytics ID
   pv:
     # The Google Analytics pageviews switch.
     # DO NOT enable it unless you know how to deploy the Google Analytics superProxy.
