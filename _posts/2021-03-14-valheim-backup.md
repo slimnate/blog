@@ -2,7 +2,7 @@
 title: Valheim Backup
 categories: [Software]
 tags: [software, valheim, c-sharp]
-pin: true
+pin: false
 ---
 
 A C# application to perform automated backups of [Valheim](https://store.steampowered.com/app/892970/Valheim/) world files.

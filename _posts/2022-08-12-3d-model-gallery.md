@@ -4,7 +4,7 @@ date: 2022-08-12 12:01:00 -0500
 categories: [Portfolio]
 tags: [3d models, 3d printing, gallery, portfolio]
 mermaid: true # enable mermaid charts
-pin: true
+pin: false
 image: # article header image
   src: /assets/img/3d-model-gallery/header.png
 ---
