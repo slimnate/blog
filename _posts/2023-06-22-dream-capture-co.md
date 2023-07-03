@@ -15,7 +15,7 @@ Overview of design and development of a portfolio and session booking website fo
 {:toc}
 
 # What + Why?
-This project, just like the [Keeper]({% post_url 2022-10-01-keeper %}) app, was also created for my girlfriend. She has a photography business and needed a website to showcase her portfolio and booking information. I was in need of another project for my portfolio, so I decided to design and build her website for her.
+This project, just like the [Keeper]({% post_url 2022-10-01-keeper %}) app, was also created for my girlfriend. She has a photography business and needed a website to showcase her portfolio and booking information. I was in need of another project for my portfolio, so I decided to design and build a website for her.
 
 ## Goals/Requirements
 The main goals of this website are:
