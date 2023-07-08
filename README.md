@@ -6,6 +6,18 @@ This repository contains my blog about Software Development, Machine Learning, a
 
 - Jupyter Notebooks for the blog: http://www.fast.ai/2020/01/20/nb2md/ 
 
+# Development
+
+## Run dev server
+
+`bundle exec jekyll serve`
+
+## Deployment
+
+`bundle exec jekyll build`
+
+Copy files from _site to static site server
+
 ## Installation issues:
 ### If issues with openssl on newer mac:
 [https://github.com/eventmachine/eventmachine/issues/932#issuecomment-743896890](https://github.com/eventmachine/eventmachine/issues/932#issuecomment-743896890)
