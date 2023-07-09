@@ -1,6 +1,6 @@
 ---
 title: Dream Capture Co - Photography Website
-date: 2022-10-01 20:23:00 -0500
+date: 2023-06-22 00:00:00 -0500
 categories: [Software]
 tags: [svelte, javascript, webdev]
 mermaid: false # enable mermaid charts
