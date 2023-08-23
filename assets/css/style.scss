@@ -45,14 +45,7 @@ dl.code-desc > dt::before {
     content: "• ";
 }
 
-.code-label ~ div.language-cpp {
-    margin-top: 0px;
-    border: #303030 2px solid;
-    border-top: none;
-    border-radius: 0px 0px 10px 10px !important;
-}
-
-.code-desc ~ div.language-cpp {
+.code-desc ~ div.highlighter-rouge {
     margin-top: 0px;
     border: #303030 2px solid;
     border-top: none;
@@ -62,4 +55,6 @@ dl.code-desc > dt::before {
 td.rouge-code {
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-left: 2px;
+    tab-size: 2;
 }

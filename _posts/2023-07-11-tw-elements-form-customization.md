@@ -2,7 +2,7 @@
 title: Customizing Tailwind Elements Form Field Colors
 date: 2023-07-11 00:00:00 -0500
 categories: [Software]
-tags: [javascript, tailwind, tw-elements, forms]
+tags: [svelte, javascript, css, tailwind, tw-elements, forms]
 mermaid: false # enable mermaid charts
 pin: false
 ---
