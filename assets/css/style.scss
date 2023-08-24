@@ -6,8 +6,19 @@ $tab-count: {{ site.tabs | size | plus: 1 }}; // plus 1 for home tab
 
 @import "jekyll-theme-chirpy";
 
-h4.code-label, h5.code-label, h6.code-label, p.code-label {
+h1.code-label,
+h2.code-label,
+h3.code-label,
+h4.code-label,
+h5.code-label,
+h6.code-label {
+    padding-top: 0.25rem;
+    padding-bottom: 0.5rem;
+}
+
+.code-label {
     padding: 0px 50px;
+    margin-top: 0px;
     margin-bottom: 0px !important;
     border-radius: 10px 10px 0px 0px !important;
     background-color: #202020 !important;
