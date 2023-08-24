@@ -69,3 +69,12 @@ td.rouge-code {
     padding-left: 2px;
     tab-size: 2;
 }
+
+@media (max-width: 576px) {
+    .post-content>[class=code-label],
+    .post-content>[class=code-desc] {
+        margin-left: -1.25rem;
+        margin-right: -1.25rem;
+        border-radius: 0;
+    }
+}
