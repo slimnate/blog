@@ -62,7 +62,6 @@ Implementation
 {: .code-label }
 
 This class is designed to cache the `temperature` and `humidity` values whenever the `void updateValues()` method is called, and make the most recent value available via getter methods: `float getTemperature()` and `float getHumidity()`.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/DHT22.cpp %}
 
@@ -78,7 +77,6 @@ Implementation
 {: .code-label }
 
 This is a very simple class, with a constructor that takes a `controlPin` parameter, an `isEnabled()` that returns the value of an internal boolean flag, and has `enable()` and `disable()` methods that set the `controlPin` to a digital `HIGH` or `LOW` to control an external transistor on the circuit board.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/AtomizerController.cpp %}
 
@@ -94,7 +92,6 @@ Implementation
 {: .code-label }
 
 This is another very simple class, implemented exactly the same way as the atomizer controller - with a constructor that takes a `controlPin` parameter, an `isEnabled()` that returns the value of an internal boolean flag, and has `enable()` and `disable()` methods that set the `controlPin` to a digital `HIGH` or `LOW` to control an external transistor on the circuit board.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/FanController.cpp %}
 
@@ -105,7 +102,6 @@ CPP Header
 {: .code-label }
 
 `HumidityControllerSettings` is a simple struct with 4 properties: `targetHumidity` (run humidifier until this humidity is reached), `kickOnHumidity` (turn humidifier on after falling below this humidity), `fanStopDelay` (time in seconds to run fans after atomizer is stopped - to clear remaining fog from reservoir), and `updateInterval` (time in seconds to check humidity levels and update system status).
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/HumidityController.h %}
 
@@ -133,7 +129,6 @@ Implementation
 
 `HumidityController::temperature()` and `HumidityController::humidity()`
 : Each method updates three floating point ref params - `avg`, `one`, and `two` - with the average and individual sensor values for temperature and humidity respectively
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/HumidityController.cpp %}
 
@@ -145,7 +140,6 @@ CPP Header
 {: .code-label }
 
 Similar to the `HumidityControllerSettings` class, `LightControllerSettings` is a simple struct with 2 properties: `schedule` (a concrete instance of the abstract `Schedule` class that returns a `ScheduleEntry` for the current date/time - see [Utilities](#utilities) > [Scheduling](#scheduling)) and `updateInterval` (time in seconds to check humidity levels and update system status).
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/LightController.h %}
 
@@ -163,7 +157,6 @@ Implementation
 
 `LightController::enableLights()`
 : Given a `DayNight` object (see [Utilities](#utilities) > [Scheduling](#scheduling)), this method enables/disables the appropriate control pins and updates the `LightController::status` variable with the new value.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/LightController.cpp %}
 
@@ -175,18 +168,47 @@ Class that implements a basic [NTP](https://labs.apnic.net/?p=462) Client that s
 
 > Note: Current implementation does not take into account daylight savings time, so the time is an hour off during half of the year and correct the other half. Future updates will add functionality to get DST info from the NTP server and update the time according to our current time zone.
 
+### NTP Protocol
+The [NTP protocol](https://labs.apnic.net/?p=462) is fairly simple, and outlined in the image below. Each red box on the diagram represents one byte (8 bits) of the packet data. The numbers next to each row indicate the start and end indices for that row in the `packetBuffer` variable. This diagram applies to both the request and response packets, as in the NTP protocol the packet format is the same for both. The relevant portions of the packet are outlined below:
+
+- **LI - Leap Indicator** - 2 bits indicating the leap year/second status - currently using `3` for unsynchronized
+- **VN - Version number** - 3 bits indicating the protocol version - currently using version `4`
+- **Mode** - 3 bits indicating the mode - using `3` for client mode
+- **Stratum** - 8 bits indicating the type of clock we would like our time to be from - currently using `0` for unspecified, since we don't have a need for high precision
+- **Poll** - 8 bits indicating the maximum time between successive NTP messages - not really relevant here, but defined to `6`
+- **Precision** - 8 bits indicating the system clock precision, in $\log_{2}(x)$ seconds. To calculate this value requires several steps:
+
+1. First, we need to find the frequency of the clock - in this case `48 MHz` or `48,000,000 Hz`.
+2. Then we use the formula to take the inverse of that frequency and get the period (time between clock ticks): $\frac{1}{f} = p$ - where $f$ is the clock frequency in $Hz$ and $p$ is the clock period in ticks/second. Evaluate the expression to get the following: $1/48,000,000 = 2.083e^{-8}$ seconds.
+3. The NTP server expects an integer value $x$ where $2^{x}$ evaluates to approximately the clock precision, so next we need to take the base-2 logarithm of this period with the following formula: $\log_{2}(p) = x$. Evaluate that expression to get $\log_{2}(2.083e^{-8}) = -25.51$, so the nearest integer value (rounded down) is $p = -25$.
+4. Since $-25$ is a _signed_ integer - it has a _negative sign_ - it should be represented in it's [two's compliment](https://en.wikipedia.org/wiki/Two%27s_complement) binary representation. However, the `byte` elements that make up our buffer array are all _unsigned_ 8-bit values, we _could_ simply write `-25` in our code and let the compiler automatically perform the two's complement operation for us, but for the sake of clarity and not relying on the compiler, we'll manually perform the operation and hard code the resulting value:
+  - To convert to two's compliment, we fist need to get the binary representation of 25: $$25_{10} = 00011001_{2}$$
+  - We then perform a binary complement operation, which swaps every `1` and `0` in the number: $$00011001_{2} \rightarrow 11100110_{2}$$
+  - To complete the two's-complement, we just need to add one to the complement: $$11100110_{2} + 1_{2} = 11100111_{2}$$
+  - Then we just convert this value to hex: $$11100111_{2} = 231_{10} = E7_{16}$$
+
+- **Root Delay** - 32 bits not used by client 
+- **Root Dispersion** - 32 bits not used by client 
+- **Reference Identifier** - 4 bytes ASCII code, indicating the reference clock type. For Stratum 0, this is irrelevant
+- **Reference Timestamp** - 64 bits indicating time request was sent by client. 32 bits of integer part, and 32 bits of decimal part. _Not used_
+- **Originate Timestamp** - 64 bits indicating time request was received by server. 32 bits of integer part, and 32 bits of decimal part. _Not used_
+- **Receive Timestamp** - 64 bits indicating time request was sent by server. 32 bits of integer part, and 32 bits of decimal part. _Not used_
+- **Transmit Timestamp** - 64 bits indicating time request was received by client. 32 bits of integer part, and 32 bits of decimal part. _This is the value we will use for our time determination_
+
+![NTP Packet Diagram](/assets/img/humidifier/ntp-packet-diagram-annotated.png)
+
 CPP Header
 {: .code-label }
 
-This file contains the definition for the `NTPClient` class, as well as definitions of constants that are used internally.<br/>
-`NTP_DEFAULT_PORT = 8888;` - default local port that the underlying UDP instance will use<br/>
-`NTP_DEFAULT_SERVER = "us.pool.ntp.org";` - default ntp server name<br/>
-`NTP_DEFAULT_TIMEZONE = -6;` - default time zone<br/>
-`NTP_PACKET_BUFFER_SIZE = 48;` - size of the internal request/response buffer in bytes<br/>
-`NTP_REQUEST_PORT = 123;` - the remote port that NTP requests will be sent to.<br/>
-`NTP_RESPONSE_WAIT_TIME = 1500;` - the maximum time in ms to wait for an NTP response<br/>
-`NTP_UNIX_TIME_OFFSET = 2208988800UL;` - constant representing the number of seconds between 1/1/1900 and 1/1/1970. Used to convert from UTC to Unix time.<br/>
-{: .code-desc }
+This file contains the definition for the `NTPClient` class, as well as definitions of constants that are used internally:
+
+- `NTP_DEFAULT_PORT = 8888;` - default local port that the underlying UDP instance will use
+- `NTP_DEFAULT_SERVER = "us.pool.ntp.org";` - default ntp server name
+- `NTP_DEFAULT_TIMEZONE = -6;` - default time zone
+- `NTP_PACKET_BUFFER_SIZE = 48;` - size of the internal request/response buffer in bytes
+- `NTP_REQUEST_PORT = 123;` - the remote port that NTP requests will be sent to.
+- `NTP_RESPONSE_WAIT_TIME = 1500;` - the maximum time in ms to wait for an NTP response
+- `NTP_UNIX_TIME_OFFSET = 2208988800UL;` - constant representing the number of seconds between 1/1/1900 and 1/1/1970. Used to convert from UTC to Unix time.
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/NTPClient.h %}
 
@@ -194,10 +216,11 @@ Implementation
 {: .code-label }
 
 `NTPClient::NTPClient(...)` - constructor
-: There are 4 overloaded constructors, that allow for creation of an object with default values. The only required value is a `WiFiUDP` instance (from the [WiFiNINA](https://www.arduino.cc/en/Reference/WiFiNINA) module) that is used for sending/receiving web requests.`settings->updateInterval` seconds. The other three valid signatures are: <br/>
-`NTPClient(WiFiUDP udp, int timeZone)`<br/>
-`NTPClient(WiFiUDP udp, String server, int timeZone)`<br/>
-`NTPClient(WiFiUDP udp, String server, u_int port, int timeZone)`
+: There are 4 overloaded constructors, that allow for creation of an object with default values. The only required value is a `WiFiUDP` instance (from the [WiFiNINA](https://www.arduino.cc/en/Reference/WiFiNINA) module) that is used for sending/receiving web requests.`settings->updateInterval` seconds. The other three valid signatures are:
+
+- `NTPClient(WiFiUDP udp, int timeZone)`
+- `NTPClient(WiFiUDP udp, String server, int timeZone)`
+- `NTPClient(WiFiUDP udp, String server, u_int port, int timeZone)`
 
 `NTPClient::initUDP()`
 : This method must be called _after_ connecting the device to a WiFi network, and _before_ sending/receiving any requests, and takes care of initializing the underlying `WiFiUDP` instance
@@ -211,34 +234,6 @@ Implementation
 `NTPClient::receiveNTPResponsePacket()`
 : This method receives and parses a NTP response packet from the remote server. It waits a specified time (default 1500 ms) for a response to come in, returning `0` if a response is not received in time. If a response is received, the size is confirmed, and the response data is buffered into `packetBuffer`. This buffer can be shared between the send and receive methods since the request and response packet share the same format (see below). We parse the first 32 bits of the _Transmit Timestamp_ section of the response packet into an unsigned long variable, convert it from UTC to Unix-style time, update the time based on the specified time-zone, and then return the value to the caller.
 
-NTP Protocol
-: The [NTP protocol](https://labs.apnic.net/?p=462) is fairly simple, and outlined in the image below. Each red box on the diagram represents one byte (8 bits) of the packet data. The numbers next to each row indicate the start and end indices for that row in the `packetBuffer` variable. This diagram applies to both the request and response packets, as in the NTP protocol the packet format is the same for both. The relevant portions of the packet are outlined below:<br/>
-**LI - Leap Indicator** - 2 bits indicating the leap year/second status - currently using `3` for unsynchronized<br/>
-**VN - Version number** - 3 bits indicating the protocol version - currently using version `4`<br/>
-**Mode** - 3 bits indicating the mode - using `3` for client mode<br/>
-**Stratum** - 8 bits indicating the type of clock we would like our time to be from - currently using `0` for unspecified, since we don't have a need for high precision<br/>
-**Poll** - 8 bits indicating the maximum time between successive NTP messages - not really relevant here, but defined to `6`<br/>
-**Precision** - 8 bits indicating the system clock precision, in $\log_{2}(x)$ seconds. To calculate this value requires several steps:<br/>
-_1)_ First, we need to find the frequency of the clock - in this case `48 MHz` or `48,000,000 Hz`.<br/>
-_2)_ Then we use the formula to take the inverse of that frequency and get the period (time between clock ticks): $\frac{1}{f} = p$ - where $f$ is the clock frequency in $Hz$ and $p$ is the clock period in ticks/second<br/>
-Evaluate the expression to get the following: $1/48,000,000 = 2.083e^{-8}$ seconds.<br/>
-_3)_ The NTP server expects an integer value $x$ where $2^{x}$ evaluates to approximately the clock precision, so next we need to take the base-2 logarithm of this period with the following formula: $\log_{2}(p) = x$<br/>
-Evaluate that expression to get $\log_{2}(2.083e^{-8}) = -25.51$, so the nearest integer value (rounded down) is $p = -25$.<br/>
-_4)_ Since $-25$ is a _signed_ integer - it has a _negative sign_ - it should be represented in it's [two's compliment](https://en.wikipedia.org/wiki/Two%27s_complement) binary representation. However, the `byte` elements that make up our buffer array are all _unsigned_ 8-bit values, we _could_ simply write `-25` in our code and let the compiler automatically perform the two's complement operation for us, but for the sake of clarity and not relying on the compiler, we'll manually perform the operation and hard code the resulting value.<br/>
-_4.1)_ To convert to two's compliment, we fist need to get the binary representation of 25: $$25_{10} = 00011001_{2}$$<br/>
-_4.2)_ We then perform a binary complement operation, which swaps every `1` and `0` in the number: $$00011001_{2} \rightarrow 11100110_{2}$$<br/>
-_4.3)_ To complete the two's-complement, we just need to add one to the complement: $$11100110_{2} + 1_{2} = 11100111_{2}$$<br/>
-_4.4)_ Then we just convert this value to hex: $$11100111_{2} = 231_{10} = E7_{16}$$<br/>
-**Root Delay** - 32 bits not used by client <br/>
-**Root Dispersion** - 32 bits not used by client <br/>
-**Reference Identifier** - 4 bytes ASCII code, indicating the reference clock type. For Stratum 0, this is irrelevant<br/>
-**Reference Timestamp** - 64 bits indicating time request was sent by client. 32 bits of integer part, and 32 bits of decimal part. _Not used_<br/>
-**Originate Timestamp** - 64 bits indicating time request was received by server. 32 bits of integer part, and 32 bits of decimal part. _Not used_<br/>
-**Receive Timestamp** - 64 bits indicating time request was sent by server. 32 bits of integer part, and 32 bits of decimal part. _Not used_<br/>
-**Transmit Timestamp** - 64 bits indicating time request was received by client. 32 bits of integer part, and 32 bits of decimal part. _This is the value we will use for our time determination_<br/>
-![NTP Packet Diagram](/assets/img/humidifier/ntp-packet-diagram-annotated.png)
-{: .code-desc }
-
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/NTPClient.cpp %}
 
 ## WebServer
@@ -247,14 +242,17 @@ The WebServer module is probably one of the more complex modules in this applica
 CPP Header
 {: .code-label }
 
-This file contains the definitions for many internal constants:<br/>
-_1)_ Server constants, such as default port, line buffer size, and line terminator character.<br/>
-_2)_ Line mode status (request, header, body) for determining how to parse a specific line.<br/>
-_3)_ Parser status (success, fail).<br/>
-_4)_ Data size constants - determine the size of internal arrays and string buffers used during sending, receiving, and parsing.<br/>
-_5)_ HTTP Status codes - string representations of common http status codes that I may use when sending a response.<br/><br/>
-It also defines the following classes - `WebServer`, `WebRequest`, `WebResponse`, `QueryParam`, and `HttpHeader` classes, discussed in more detail in the implementation notes below
-{: .code-desc }
+This file contains the definitions for many internal constants:
+1. Server constants, such as default port, line buffer size, and line terminator character.
+2. Line mode status (request, header, body) for determining how to parse a specific line.
+3. Parser status (success, fail).
+4. Data size constants - determine the size of internal arrays and string buffers used during sending, receiving, and parsing.
+5. HTTP Status codes - string representations of common http status codes that I may use when sending a response. It also defines the following classes, discussed in more detail in the implementation notes below:
+  - `WebServer`
+  - `WebRequest`
+  - `WebResponse`
+  - `QueryParam`
+  - `HttpHeader`
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/WebServer.h %}
 
@@ -262,7 +260,8 @@ Implementation
 {: .code-label }
 
 **WebServer**
-: The web server class is responsible for handling and parsing incoming HTTP requests
+
+The web server class is responsible for handling and parsing incoming HTTP requests
 
 `WebServer::WebServer()` - constructor
 : The web server constructor takes an optional `byte` parameter specifying the port to listen on.
@@ -286,7 +285,8 @@ Implementation
 : This method is responsible for parsing the contents of `_lineBuffer` as a header line, and setting `key` to the header name and `value` to the header value.
 
 **WebRequest**
-: The `WebRequest` is responsible for wrapping all the properties of web request in a single object, and providing a method to get a `WebResponse` object that can be used to respond.
+
+The `WebRequest` is responsible for wrapping all the properties of web request in a single object, and providing a method to get a `WebResponse` object that can be used to respond.
 
 `WebRequest::getResponse()`
 : This method builds ad returns a `WebResponse` object that corresponds to this `WebRequest`. It copies over the `client` and `httpVersion` properties, and adds a default status of `200 OK` as well as the following default headers: `Content-Type text/plain`, `Server: Arduino NANO 33 IoT - Snake Tank Controller`, and `Connection: close`.
@@ -295,17 +295,17 @@ Implementation
 : This method is used to access a specific header from this request. The `HttpHeader` object header with the specified `name` will be assigned to the `HttpHeader` object referenced by the `dest` parameter.
 
 **WebResponse**
-: The `WebResponse` is responsible for providing an interface to build a response to a specific web request, and providing a method to send that request to the remote server.
+
+The `WebResponse` is responsible for providing an interface to build a response to a specific web request, and providing a method to send that request to the remote server.
 
 `WebRequest::addHeader()`
-: The addHeader method is used to add an HTTP header to the response, and returns `1` on success, and `-1` on failure (in the case that this `WebResponse` already has the maximum supported number of headers). There are four overloads of this method: one that accepts an `HttpHeader` object directly, and three that accept two parameters: `key` and `value`. The two-parameter overloads all accept a C-string for the `key`, and one of the following types for `value`:<br/>
-_1)_ `char*` - C-string value of header<br/>
-_2)_ `float` - float value of header that will be converted to C-string<br/>
-_3)_ `long` - long value of header that will be converted to C-string
+: The addHeader method is used to add an HTTP header to the response, and returns `1` on success, and `-1` on failure (in the case that this `WebResponse` already has the maximum supported number of headers). There are four overloads of this method: one that accepts an `HttpHeader` object directly, and three that accept two parameters: `key` and `value`. The two-parameter overloads all accept a C-string for the `key`, and one of the following types for `value`:
+- `char*` - C-string value of header
+- `float` - float value of header that will be converted to C-string
+- `long` - long value of header that will be converted to C-string
 
 `WebRequest::send()`
 : This method is responsible for sending the built response to the requesting client. It checks the client is still connected, calculates the size of `body` and generates a `content-length` header, and then serializes and sends the bytes of the response to the client. We then close the connection and return `1` for success. If part of the process fails, `-1` is returned to inform the caller.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/WebServer.cpp %}
 
@@ -315,10 +315,10 @@ Provides a simple REST-ful(ish) HTTP router implementation. I have a decent amou
 CPP Header
 {: .code-label }
 
-This file contains the definitions for the `Route` and `Router` classes, the max number of routes supported by the router, and a custom type definition for route callback functions:<br/><br/>
-`rest_callback_t` - defines a custom type representing a pointer to a function that accepts two parameters of type `WebRequest` and `WebResponse` in that order<br/>
-`ROUTER_MAX_ROUTES = 20;` - defines the maximum number of routes that a router instance can hold.<br/>
-{: .code-desc }
+This file contains the definitions for the `Route` and `Router` classes, the max number of routes supported by the router, and a custom type definition for route callback functions:
+
+- `rest_callback_t` - defines a custom type representing a pointer to a function that accepts two parameters of type `WebRequest` and `WebResponse` in that order
+- `ROUTER_MAX_ROUTES = 20;` - defines the maximum number of routes that a router instance can hold.
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/Router.h %}
 
@@ -336,7 +336,6 @@ Implementation
 
 `Router::handle(String path, rest_callback_t cb)`
 : This method is responsible for routing incoming requests to th correct handler/callback function. It looks through each registered route and finds one that matches the `method` and `path`. If a matching route is found, a `WebResponse` object is created using the `WebRequest::getResponse()` function, and the callback function is called with the existing request and new response parameter. If no matching route is found, the router automatically responds to the client with a `404 Not Found` response.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/Router.cpp %}
 
@@ -347,10 +346,10 @@ This class encapsulates the functionality of the WiFiNINA module, such as verify
 CPP Header
 {: .code-label }
 
-This file contains the definitions for the `WifiController` and `WifiControllerSettings` classes:<br/><br/>
-**WifiControllerSettings** - Struct representing wifi connection settings such as SSID and password<br/>
-**WifiController** - Static class providing methods for connecting to networks and monitoring/displaying network status<br/>
-{: .code-desc }
+This file contains the definitions for the `WifiController` and `WifiControllerSettings` classes:
+
+- **WifiControllerSettings** - Struct representing wifi connection settings such as SSID and password
+- **WifiController** - Static class providing methods for connecting to networks and monitoring/displaying network status
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/WifiController.h %}
 
@@ -386,7 +385,6 @@ global `encryptionTypeToString(byte encryptionType)`
 
 `WifiController::WifiController::printNetwork(byte i)`
 : Print the network details (ssid, mac, encryption type, channel, and signal strength) of the available wifi network identified by `i`.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/WifiController.cpp %}
 
@@ -406,7 +404,6 @@ Implementation
 
 `MacAddress::toString()`
 : Convert the address stored in `bytes` to a string, represented in hexadecimal format.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/MacAddress.cpp %}
 
@@ -457,13 +454,14 @@ Class that implements a basic [Bit Flag/Bit Field](https://en.wikipedia.org/wiki
 CPP Header
 {: .code-label }
 
-This file contains the definitions for the `Bitflag` class. The bits are stored on a private variable `_bits`, and methods are provided to interact with the bits. Since this class is only currently used for one purpose - determining which values are requesting to be updated from the `POST humidity/settings` route (see [Networking](#networking) > [routes](#routes)) - it also defines unique bit constants, each corresponding to a specific field. If the flag for a field is set, the request handler knows to update that field with the provided value.<br/><br/>
-`BIT_HUM_TARGET   = 0b1000;` - humidity target field<br/>
-`BIT_HUM_KICK_ON  = 0b0100;` - humidity kick on field<br/>
-`BIT_HUM_FAN_STOP = 0b0010;` - humidity fan stop field<br/>
-`BIT_HUM_UPDATE   = 0b0001;` - humidity update field<br/>
+This file contains the definitions for the `Bitflag` class. The bits are stored on a private variable `_bits`, and methods are provided to interact with the bits. Since this class is only currently used for one purpose - determining which values are requesting to be updated from the `POST humidity/settings` route (see [Networking](#networking) > [routes](#routes)) - it also defines unique bit constants, each corresponding to a specific field. If the flag for a field is set, the request handler knows to update that field with the provided value.
+
+- `BIT_HUM_TARGET   = 0b1000;` - humidity target field
+- `BIT_HUM_KICK_ON  = 0b0100;` - humidity kick on field
+- `BIT_HUM_FAN_STOP = 0b0010;` - humidity fan stop field
+- `BIT_HUM_UPDATE   = 0b0001;` - humidity update field
+
 >Note: The current flag only need up to 4 bits, so we could use a byte or smaller variable type, but to allow for extensibility, the `_bit` field and all method arguments accept `u_int` allowing this class to work with up to 32 bits.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/Bitflag.h %}
 
@@ -478,7 +476,6 @@ Implementation
 
 `Bitflag::checkAny()`
 : This is a helper method to easily determine if any bits have been set yet. Returns true if the value of `_bits` is non-zero, false otherwise.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/Bitflag.cpp %}
 
@@ -488,11 +485,11 @@ This module provides a `Date` and `Time` class, as well as a `Comparable<T>` int
 CPP Header
 {: .code-label }
 
-This file contains the definitions for the three classes (`Comparable<T>`, `Date`, and `Time`):<br/><br/>
-**Comparable<T>** - interface that defines a single virtual method, `virtual int compare(T);`, which allows for comparing two objects, for example `a.compare(b)` will return 1 if `a > b`, 0 if `a = b`, and -1 if `a < b`<br/>
-**Date** - represents a date with `year`, `month`, and `day` properties<br/>
-**Time** - represents a time with `hours` `minute`, and `second` properties<br/>
-{: .code-desc }
+This file contains the definitions for the three classes (`Comparable<T>`, `Date`, and `Time`):
+
+- **Comparable<T>** - interface that defines a single virtual method, `virtual int compare(T);`, which allows for comparing two objects, for example `a.compare(b)` will return 1 if `a > b`, 0 if `a = b`, and -1 if `a < b`
+- **Date** - represents a date with `year`, `month`, and `day` properties
+- **Time** - represents a time with `hours` `minute`, and `second` properties
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/DateTime.h %}
 
@@ -543,7 +540,6 @@ Implementation
 
 `Time::printSerial()`
 : Print this date object to serial interface using `Serial.write()`
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/DateTime.cpp %}
 
@@ -570,7 +566,6 @@ CPP Header and Implementation
 
 `Lines::split(const char* inStr)`
 : Split the string in `inStr` into individual lines, using `\n` as the line delimiter, and return a new `Lines` object containing them.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/lines.h %}
 
@@ -580,12 +575,12 @@ This module provides a number of classes that work together to provide extensibl
 CPP Header
 {: .code-label }
 
-This file defines two enums, `ScheduleType` and `LightStatus`, and several classes:<br/><br/>
-**ScheduleEntry**<br/> - this class defines a day and night start time for a specific date/time range, and logic to determine the status for a specific time.
-**Schedule**<br/> - this is an abstract class that each schedule implementation inherits from
-**FixedSchedule**<br/> - concrete `Schedule` implementation that provides a single fixed entry no matter the date.
-**FixedSchedule**<br/> - concrete `Schedule` implementation that provides a different entry for each month, 12 in total.
-{: .code-desc }
+This file defines two enums, `ScheduleType` and `LightStatus`, and several classes:
+
+- **ScheduleEntry** - this class defines a day and night start time for a specific date/time range, and logic to determine the status for a specific time.
+- **Schedule** - this is an abstract class that each schedule implementation inherits from
+- **FixedSchedule** - concrete `Schedule` implementation that provides a single fixed entry no matter the date.
+- **FixedSchedule** - concrete `Schedule` implementation that provides a different entry for each month, 12 in total.
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/Scheduling.h %}
 
@@ -627,10 +622,8 @@ Implementation
 
 `void MonthlySchedule::toString(char* dest)`
 : Set value of `dest` to the string representation of this schedule. Used to send/update schedules over the network. This implementation is represented by twelve lines, one for each `ScheduleEntry` in `schedules`. Each line will have the value of `this->schedules[i].toString()` where `i` is the month, `0` through `11`
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/Scheduling.cpp %}
-
 
 # Constants
 
@@ -641,7 +634,6 @@ CPP Header
 {: .code-label }
 
 This file simply defines two constant char arrays:
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/secrets.h %}
 
@@ -651,17 +643,19 @@ This file simply defines two constant char arrays:
 CPP Header
 {: .code-label }
 
-This file defines several variables for the controller classes. These are defined as globals so that they can be read by the controller classes and updated by the web server route handlers.<br/><br/>
-`humidityControllerSettings` - current settings for the `HumidityController` class<br/>
-`lightControllerSettings` - current settings for the `LightController` class<br/>
-`wifiControllersettings` - current settings for the `WifiController` class<br/>
-`lightControllerSchedule` - current schedule for the `LightController` class<br/>
-It also defines some networking variables. These are defined as globals to allow them to be accessed by both the main event loop and the `routes.h` and other networking related classes.<br/><br/>
-`udp` - an instance of `WiFiUDP` used by `ntp`<br/>
-`ntp` - an instance of `NTPClient`, used to send and receive NTP time<br/>
-`server` - an instance of `WebServer` for processing incoming HTTP requests<br/>
-`router` - an instance of `Router` for routing incoming HTTP requests to the right handler<br/>
-{: .code-desc }
+This file defines several variables for the controller classes. These are defined as globals so that they can be read by the controller classes and updated by the web server route handlers.
+
+- `humidityControllerSettings` - current settings for the `HumidityController` class
+- `lightControllerSettings` - current settings for the `LightController` class
+- `wifiControllersettings` - current settings for the `WifiController` class
+- `lightControllerSchedule` - current schedule for the `LightController` class
+
+It also defines some networking variables. These are defined as globals to allow them to be accessed by both the main event loop and the `routes.h` and other networking related classes.
+
+- `udp` - an instance of `WiFiUDP` used by `ntp`
+- `ntp` - an instance of `NTPClient`, used to send and receive NTP time
+- `server` - an instance of `WebServer` for processing incoming HTTP requests
+- `router` - an instance of `Router` for routing incoming HTTP requests to the right handler
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/globals.h %}
 
@@ -692,6 +686,5 @@ Global functions
 
 `void registerRoutes()`
 : Registers all the routes defined in [routes.h](#routes) with the global `router` object.
-{: .code-desc }
 
 {% git_include https://github.com/slimnate/arduino_climate_control/blob/master/climate_control.ino %}

@@ -34,18 +34,37 @@ h6.code-label {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#242424",endColorstr="#202020",GradientType=1);
 }
 
-p.code-desc, dl.code-desc, ul.code-desc {
-    margin-bottom: 0px;
+.code-desc {
+    margin-bottom: 0px !important;
     margin-top: 0px;
-    padding: 15px 50px;
+    padding-left: 1rem;
+    padding-right:1rem;
     border: #303030 2px solid;
     border-top: none;
-    border-bottom: #303030 thin dashed;
+    border-bottom: none;
     background: rgb(36,36,36);
-    background: -moz-linear-gradient(0deg, rgba(36,36,36,1) 0%, rgba(32,32,32,1) 10%, rgba(32,32,32,1) 90%, rgba(36,36,36,1) 100%);
-    background: -webkit-linear-gradient(0deg, rgba(36,36,36,1) 0%, rgba(32,32,32,1) 10%, rgba(32,32,32,1) 90%, rgba(36,36,36,1) 100%);
-    background: linear-gradient(0deg, rgba(36,36,36,1) 0%, rgba(32,32,32,1) 10%, rgba(32,32,32,1) 90%, rgba(36,36,36,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#242424",endColorstr="#242424",GradientType=1);
+
+    ol, ul {
+        margin-bottom: 0rem;
+    }
+
+    dd {
+        margin-bottom: 0px;
+        padding-bottom: .5rem;
+    }
+}
+ul.code-desc,
+ol.code-desc {
+    padding-bottom: .5rem;
+}
+
+.code-desc-first {
+    padding-top: .5rem;
+}
+
+.code-desc-last {
+    padding-bottom: .1rem;
+    border-bottom: #303030 thin dashed;
 }
 
 dl.code-desc > dt > code {
@@ -56,7 +75,17 @@ dl.code-desc > dt::before {
     content: "• ";
 }
 
-.code-desc ~ div.highlighter-rouge {
+// h5.code-desc,
+// h4.code-desc,
+// h3.code-desc,
+// h2.code-desc {
+//     margin-top: -2.5rem;
+//     padding-bottom: .5rem;
+// }
+
+.code-desc ~ div.highlighter-rouge,
+.code-desc ~ pre:has(code) {
+    padding: 0px;
     margin-top: 0px;
     border: #303030 2px solid;
     border-top: none;
@@ -71,10 +100,19 @@ td.rouge-code {
 }
 
 @media (max-width: 576px) {
-    .post-content>[class=code-label],
-    .post-content>[class=code-desc] {
+    .code-label, .code-desc {
         margin-left: -1.25rem;
         margin-right: -1.25rem;
         border-radius: 0;
+    }
+
+    .code-desc {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    ul.code-desc,
+    ol.code-desc {
+        padding-left: 3rem;
     }
 }

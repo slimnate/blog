@@ -23,8 +23,11 @@ Install Skeleton:
 Install Tailwind Forms (required for form elements):
 `npm install -D @tailwindcss/forms`
 
-## Tailwing Config
-tailwind.config.cjs:
+## Tailwind Config
+
+`tailwind.config.cjs`
+{: .code-label }
+
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -51,7 +54,11 @@ module.exports = {
 I created a custom theme using the [Skeleton theme generator](https://www.skeleton.dev/docs/generator) - `src/theme.postcss` - and added this in place of the default skeleton theme in the app layout: 
 
 
-src/routes/+layout.svelte - added lines 3 and 4:
+`src/routes/+layout.svelte`
+{: .code-label }
+
+added lines 3 and 4:
+
 ```html
 <script>
 	import Footer from '$lib/components/Footer.svelte';
@@ -91,15 +98,16 @@ When exploring the Skeleton UI form variants, I landed on the material variant f
 ## Component: `Input`
 The first custom component is the `Input` component, which provides a wrapper for HTML input components (this component is only for `type="text"` input elements, due to limitations with svelte two-way input binding - see [this issue](https://github.com/sveltejs/svelte/issues/3921) for more info). This component is very simple and just renders an input field with the supplied properties - it doesn't require any component-specific logic.
 
+
+File: `$lib/components/form-fields/Input.svelte`
+{: .code-label }
+
 Properties:
 - `id` **required** - id of the underlying `textarea` element
 - `name` **required** - name of the underlying `textarea` element
 - `label` **required** - placeholder and label text for field
 - `value` **optional** - the value of the field, can also be bound to (default: `''`)
 - `error` **optional** - the errors message to display on invalid value
-
-File: `$lib/components/form-fields/Input.svelte`
-{: .code-label }
 
 ```html
 <script>
@@ -143,14 +151,14 @@ This component is basically the same as the `Input` component, except that is us
 
 This component also does not include any display of validation errors, since none of the `TextArea` components on my form are required, but for consistency's sake this is something that should be added in the future if I want to work these components into a more standardized collection.
 
+File: `$lib/components/form-fields/TextArea.svelte`
+{: .code-label }
+
 Properties:
 - `id` **required** - id of the underlying `textarea` element
 - `name` **required** - name of the underlying `textarea` element
 - `label` **required** - placeholder and label text for field
 - `value` **optional** - the value of the field, can also be bound to (default: `''`)
-
-File: `$lib/components/form-fields/TextArea.svelte`
-{: .code-label }
 
 ```html
 <script>
@@ -193,7 +201,10 @@ The radio component wraps a list of radio options and provides a way to set a de
 
 This component must watch for `change` events on the individual radio elements to update the selected value.
 
-Like the `TextArea` component above, this component does nt include any validation message display as the radio will always have a default checked value in my use case. For standardization, it might be a good idea to add validation capabilities.
+Like the `TextArea` component above, this component does not include any validation message display as the radio will always have a default checked value in my use case. For standardization, it might be a good idea to add validation capabilities.
+
+File: `$lib/components/form-fields/Radio.svelte`
+{: .code-label }
 
 Properties:
 - `name` **required** - name of the form field for each of the radio elements
@@ -206,9 +217,6 @@ Properties:
 - `value` **required** - `value` attribute for the specific radio item
 - `display` **optional** - optional display text for the radio item, if not supplied `value` will be used
 - `checked` **optional** - optional boolean value, if truthy value supplied the radio item will default to checked
-
-File: `$lib/components/form-fields/Radio.svelte`
-{: .code-label }
 
 ```html
 <script>
@@ -274,6 +282,9 @@ This component has to handle several events on the underlying `input` element to
 
 It uses absolute positioning relative to the container `div` to display the picker in the proper location, and uses the tailwind `hidden` class to hide/show the picker.
 
+File: `$lib/components/form-fields/DatePicker.svelte`
+{: .code-label }
+
 Properties:
 - `id` **required** - id of the underlying `input` element
 - `name` **required** - name of the underlying `input` element
@@ -281,9 +292,6 @@ Properties:
 - `format` **optional** - Date format to use in the display field (default: `mm-dd-yyy`) - see **standard formats** section of [svelty-picker documentation](https://mskocik.github.io/svelty-picker/formatting) for more information
 - `value` **optional** - the value of the field, can also be bound to (default: `''`)
 - `error` **optional** - the errors message to display on invalid value
-
-File: `$lib/components/form-fields/DatePicker.svelte`
-{: .code-label }
 
 ```html
 <script>
@@ -364,6 +372,9 @@ File: `$lib/components/form-fields/DatePicker.svelte`
 ## Component: `TimePicker`
 This component functions in exactly the same way as the `DatePicker` component, but it uses the `time` mode of the `SveltyPicker` instead.
 
+File: `$lib/components/form-fields/TimePicker.svelte`
+{: .code-label }
+
 Props:
 - `id` **required** - id of the underlying `input` element
 - `name` **required** - name of the underlying `input` element
@@ -371,9 +382,6 @@ Props:
 - `format` **optional** - Time format to use in the display field (default: `HH:ii P`) - see standard formats section of [svelty-picker documentation](https://mskocik.github.io/svelty-picker/formatting)
 - `value` **optional** - the value of the field, can also be bound to (default: `''`)
 - `error` **optional** - the errors message to display on invalid value
-
-File: `$lib/components/form-fields/TimePicker.svelte`
-{: .code-label }
 
 ```html
 <script>
@@ -455,6 +463,9 @@ File: `$lib/components/form-fields/TimePicker.svelte`
 ## Component: `Select`
 The select component is the most complicated of the custom components, as it must track internal state as well as displaying a custom formatted select menu, and proxying actions on the displayed menu to the underlying `select` element.
 
+File: `$lib/components/form-fields/Select.svelte`
+{: .code-label }
+
 Properties:
 - `id` **required** - `id` attribute for the select element
 - `name` **required** - `name` attribute of the select element
@@ -468,9 +479,6 @@ Properties:
 - `display` **required** - display text for the option item
 - `secondary` **optional** - secondary text for the option item. If supplied, this text will appear in semi-bold before the display text, and the display text will be bold
 - `description` **optional** - This value can be used to provide a description that will show up below the display and secondary text, and can also accept raw HTML to allow for custom markup, like a list, grid, or table.
-
-File: `$lib/components/form-fields/Select.svelte`
-{: .code-label }
 
 ```html
 <script>
@@ -868,7 +876,6 @@ Success Modal - `$lib/components/form-fields/SuccessModal.svelte`
 {: .code-label }
 
 The success modal is a modal that provides a method to show the modal, as well as a `name` property to personalize the text of the modal with the name of the person submitting the form.
-{: .code-desc }
 
 ```html
 <script>
