@@ -83,8 +83,9 @@ dl.code-desc > dt::before {
 //     padding-bottom: .5rem;
 // }
 
-.code-desc ~ div.highlighter-rouge,
-.code-desc ~ pre:has(code) {
+.code-label + div.highlighter-rouge,
+.code-desc + div.highlighter-rouge,
+.code-desc + pre:has(code) {
     padding: 0px;
     margin-top: 0px;
     border: #303030 2px solid;
@@ -115,4 +116,13 @@ td.rouge-code {
     ol.code-desc {
         padding-left: 3rem;
     }
+}
+
+// Replacement for default padding of 1.5 rem on non-line numbers code blocks
+div[class^=highlighter-rouge] td.rouge-code,
+div.language-plaintext.highlighter-rouge td.rouge-code,
+div.language-console.highlighter-rouge td.rouge-code,
+div.language-terminal.highlighter-rouge td.rouge-code,
+div>pre {
+    padding: 1rem;
 }
