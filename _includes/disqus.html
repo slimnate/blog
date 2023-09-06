@@ -14,12 +14,24 @@
   const options = {
     scriptUrl: '//{{ site.disqus.shortname }}.disqus.com/embed.js',
 
-    disqusConfig: function() {
+    disqusConfig: function () {
       this.page.title = '{{ page.title }}';
       this.page.url = '{{ page.url | absolute_url }}';
       this.page.identifier = '{{ page.url }}';
-    }
+      this.callbacks.onReady.push(clearDisqusAds);
+    },
   };
 
   $.disqusLoader('#disqus', options);
+
+  // Custom code to delete the ad frames
+  function clearDisqusAds() {
+    const disqus = $('#disqus_thread');
+    setTimeout(function () {
+      if (disqus.children().length >= 3) {
+        const comments = disqus.find('iframe:nth-child(2)').detach();
+        disqus.empty().append(comments);
+      }
+    }, 2000);
+  }
 </script>
