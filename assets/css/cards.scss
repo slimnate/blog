@@ -1,0 +1,83 @@
+
+$color-shadow-gray: rgba(50,50,50,.8);
+$color-text: black;
+
+// ERROR: Generated from https://tints.dev/error/CC3333 with lightness max of 88
+$color-error-50: #FAEBEB;
+$color-error-100: #F5D6D6;
+$color-error-200: #EBADAD;
+$color-error-300: #E08585;
+$color-error-400: #D65C5C;
+$color-error-500: #CC3333;
+$color-error-600: #A32929;
+$color-error-700: #7A1F1F;
+$color-error-800: #521414;
+$color-error-900: #290A0A;
+$color-error-950: #140505;
+
+// WARN: https://tints.dev/warn/EAB308
+$color-warn-50: #FEF8E6;
+$color-warn-100: #FDF1CE;
+$color-warn-200: #FBE297;
+$color-warn-300: #FAD566;
+$color-warn-400: #F8C630;
+$color-warn-500: #EAB308;
+$color-warn-600: #BB8E06;
+$color-warn-700: #8F6C05;
+$color-warn-800: #5E4703;
+$color-warn-900: #312502;
+$color-warn-950: #191301;
+
+// SUCCESS: https://tints.dev/sucess/84CC16
+$color-success-50: #F2FCE3;
+$color-success-100: #E7FACC;
+$color-success-200: #D0F49A;
+$color-success-300: #B8EF67;
+$color-success-400: #9FE930;
+$color-success-500: #84CC16;
+$color-success-600: #68A111;
+$color-success-700: #507C0D;
+$color-success-800: #355309;
+$color-success-900: #1B2904;
+$color-success-950: #0C1202;
+
+// INFO: https://www.tints.dev/info/86D0CB
+$color-info-50: #F4FBFA;
+$color-info-100: #E5F5F4;
+$color-info-200: #CFECEA;
+$color-info-300: #B6E2DF;
+$color-info-400: #A0DAD6;
+$color-info-500: #86D0CB;
+$color-info-600: #56BDB6;
+$color-info-700: #39938D;
+$color-info-800: #27635F;
+$color-info-900: #13302E;
+$color-info-950: #0A1A19;
+
+@mixin card($color-light, $color-dark, $color-text) {
+  background: $color-light;
+    outline: px solid $color-dark;
+    border-radius: .5rem;
+    padding: .5rem;
+    padding-left: .5rem;
+    box-shadow: 0px 2px 10px 3px $color-shadow-gray, inset 0px 0px 4px 1px $color-dark;
+    color: $color-text;
+    font-size: 1rem;
+    padding-right: .5rem;
+}
+
+.card-error {
+    @include card($color-error-200, $color-error-500, $color-text)
+}
+
+.card-warn {
+    @include card($color-warn-200, $color-warn-500, $color-text)
+}
+
+.card-success {
+    @include card($color-success-200, $color-success-500, $color-text)
+}
+
+.card-info {
+    @include card($color-info-200, $color-info-500, $color-text)
+}
