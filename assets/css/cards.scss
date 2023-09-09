@@ -1,8 +1,12 @@
+// https://stackoverflow.com/a/25478589
+@function url-friendly-color($color) {
+    @return '%23' + str-slice('#{$color}', 2, -1)
+}
 
 $color-shadow-gray: rgba(50,50,50,.8);
 $color-text: black;
 
-// ERROR: Generated from https://tints.dev/error/CC3333 with lightness max of 88
+// ERROR: https://tints.dev/error/CC3333
 $color-error-50: #FAEBEB;
 $color-error-100: #F5D6D6;
 $color-error-200: #EBADAD;
@@ -54,17 +58,27 @@ $color-info-800: #27635F;
 $color-info-900: #13302E;
 $color-info-950: #0A1A19;
 
+// Mixin for cards of different colors
 @mixin card($color-light, $color-dark, $color-text) {
+  //styling for colors and border
   background: $color-light;
-    outline: px solid $color-dark;
-    border-radius: .5rem;
-    padding: .5rem;
-    padding-left: .5rem;
-    box-shadow: 0px 2px 10px 3px $color-shadow-gray, inset 0px 0px 4px 1px $color-dark;
-    color: $color-text;
-    font-size: 1rem;
-    padding-right: .5rem;
+  outline: 1px solid $color-dark;
+  border-radius: .5rem;
+  padding: .5rem;
+  padding-left: .5rem;
+  box-shadow: 0px 2px 10px 3px $color-shadow-gray, inset 0px 0px 4px 1px $color-dark;
+  color: $color-text;
+  font-size: 1rem;
+  padding-right: .5rem;
+
+  //layout for icons
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
+
+// card classes
 
 .card-error {
     @include card($color-error-200, $color-error-500, $color-text)
@@ -80,4 +94,33 @@ $color-info-950: #0A1A19;
 
 .card-info {
     @include card($color-info-200, $color-info-500, $color-text)
+}
+
+// card icons
+
+.card-error::before,
+.card-warn::before,
+.card-success::before,
+.card-info::before {
+  padding-right: 1rem;
+  padding-left: .5rem;
+}
+
+.card-error::before {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 512 512"><path style="fill:#{ url-friendly-color($color-error-500) }" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>');
+}
+
+.card-warn::before {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 512 512"><path style="fill:#{ url-friendly-color($color-warn-500) }" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>');
+  color: $color-warn-500;
+}
+
+.card-success::before {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 512 512"><path style="fill:#{ url-friendly-color($color-success-500) }" d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>');
+  color: $color-success-500;
+}
+
+.card-info::before {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 512 512"><path style="fill:#{ url-friendly-color($color-info-500) }" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>');
+  color: $color-info-500;
 }
