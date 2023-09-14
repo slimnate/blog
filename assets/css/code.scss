@@ -76,8 +76,7 @@ dl.code-desc > dt::before {
 // addition of auto-detecting languages from github files.
 //.code-desc + pre:has(code),
 .code-label + .highlighter-rouge,
-.code-desc + .highlighter-rouge
- {
+.code-desc + .highlighter-rouge {
     padding: 0px;
     margin-top: 0px;
     border: var(--highlight-lineno-border-color) 2px solid;
