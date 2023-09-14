@@ -66,7 +66,7 @@ $color-info-950: #0A1A19;
   border-radius: .5rem;
   padding: .5rem;
   padding-left: .5rem;
-  box-shadow: 0px 2px 10px 3px $color-shadow-gray, inset 0px 0px 4px 1px $color-dark;
+  box-shadow: 0px 0px 5px 1px var(--text-color), inset 0px 0px 4px 1px $color-dark;
   color: $color-text;
   font-size: 1rem;
   padding-right: .5rem;
