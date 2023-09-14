@@ -70,9 +70,14 @@ dl.code-desc > dt::before {
 //     padding-bottom: .5rem;
 // }
 
-.code-label + div.highlighter-rouge,
-.code-desc + div.highlighter-rouge,
-.code-desc + pre:has(code) {
+// Had to remove this line for firefox. Works fine in other browsers,
+// ut in FF this line causes none of the selectors to be applied... WTF.
+// Should be fine though since I think this won't be needed with the
+// addition of auto-detecting languages from github files.
+//.code-desc + pre:has(code),
+.code-label + .highlighter-rouge,
+.code-desc + .highlighter-rouge
+ {
     padding: 0px;
     margin-top: 0px;
     border: var(--highlight-lineno-border-color) 2px solid;
