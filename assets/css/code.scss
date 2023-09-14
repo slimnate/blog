@@ -13,17 +13,12 @@ h6.code-label {
     margin-top: 0px;
     margin-bottom: 0px !important;
     border-radius: 10px 10px 0px 0px !important;
-    background-color: #202020 !important;
-    box-shadow: 0px 10px 2px #252525;
     font-weight: 800;
     font-size: 22px;
-    border: #303030 2px solid;
-    border-bottom: #303030 thin dashed;
-    background: rgb(36,36,36);
-    background: -moz-linear-gradient(0deg, rgba(36,36,36,1) 0%, rgba(32,32,32,1) 20%);
-    background: -webkit-linear-gradient(0deg, rgba(36,36,36,1) 0%, rgba(32,32,32,1) 20%);
-    background: linear-gradient(0deg, rgba(36,36,36,1) 0%, rgba(32,32,32,1) 20%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#242424",endColorstr="#202020",GradientType=1);
+    color: var(--text-color);
+    border: var(--highlight-lineno-border-color) 2px solid;
+    border-bottom: var(--highlight-lineno-border-color) thin dashed;
+    background: var(--highlight-bg-color);
 }
 
 .code-desc {
@@ -31,10 +26,10 @@ h6.code-label {
     margin-top: 0px;
     padding-left: 1rem;
     padding-right:1rem;
-    border: #303030 2px solid;
+    border: var(--highlight-lineno-border-color) 2px solid;
     border-top: none;
     border-bottom: none;
-    background: rgb(36,36,36);
+    background: var(--highlight-bg-color);
 
     ol, ul {
         margin-bottom: 0rem;
@@ -56,7 +51,7 @@ ol.code-desc {
 
 .code-desc-last {
     padding-bottom: .1rem;
-    border-bottom: #303030 thin dashed;
+    border-bottom: var(--highlight-lineno-border-color) thin dashed;
 }
 
 dl.code-desc > dt > code {
@@ -75,14 +70,23 @@ dl.code-desc > dt::before {
 //     padding-bottom: .5rem;
 // }
 
-.code-label + div.highlighter-rouge,
-.code-desc + div.highlighter-rouge,
-.code-desc + pre:has(code) {
+// Had to remove this line for firefox. Works fine in other browsers,
+// ut in FF this line causes none of the selectors to be applied... WTF.
+// Should be fine though since I think this won't be needed with the
+// addition of auto-detecting languages from github files.
+//.code-desc + pre:has(code),
+.code-label + .highlighter-rouge,
+.code-desc + .highlighter-rouge {
     padding: 0px;
     margin-top: 0px;
-    border: #303030 2px solid;
+    border: var(--highlight-lineno-border-color) 2px solid;
     border-top: none;
     border-radius: 0px 0px 10px 10px !important;
+}
+
+.code-label code,
+.code-desc code {
+    border: var(--highlight-lineno-border-color) 1px solid;
 }
 
 td.rouge-code {
