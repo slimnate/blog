@@ -12,7 +12,7 @@ function formatCodeDesc() {
   }
 
   $('.code-label').each((i, label) => {
-    console.log(label);
+    // console.log(label);
     let sibling = $(label).next();
     let previousSibling = sibling;
 
