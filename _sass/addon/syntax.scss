@@ -2,26 +2,26 @@
 * The syntax highlight.
 */
 
-@import "colors/light-syntax";
-@import "colors/dark-syntax";
+@use "colors/light-syntax" as light;
+@use "colors/dark-syntax" as dark;
 
 html:not([mode]),
 html[mode=light] {
-  @include light-syntax;
+  @include light.light-syntax;
 }
 
 html[mode=dark] {
-  @include dark-syntax;
+  @include dark.dark-syntax;
 }
 
 @media (prefers-color-scheme: dark) {
   html:not([mode]),
   html[mode=dark] {
-    @include dark-syntax;
+    @include dark.dark-syntax;
   }
 
   html[mode=light] {
-    @include light-syntax;
+    @include light.light-syntax;
   }
 }
 
