@@ -1,6 +1,8 @@
+@use "sass:string";
+
 // https://stackoverflow.com/a/25478589
 @function url-friendly-color($color) {
-    @return '%23' + str-slice('#{$color}', 2, -1)
+    @return '%23' + string.slice('#{$color}', 2, -1)
 }
 
 $color-shadow-gray: rgba(50,50,50,.8);
