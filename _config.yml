@@ -15,8 +15,10 @@ theme: jekyll-theme-chirpy
 baseurl: ''
 
 email: slimnatekc@gmail.com
-github_username: slimnate
-twitter_username: slimnatekc
+github:
+  username: slimnate
+twitter:
+  username: slimnatedev
 
 # Social info for default post author
 social:
