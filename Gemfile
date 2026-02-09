@@ -23,7 +23,7 @@ group :jekyll_plugins do
 end
 
 gem "kramdown-math-katex"
-gem "faraday", "< 1.0"
+gem "faraday", "< 3.0"
 gem "minitest", "~> 5.14"
 gem "webrick", "~> 1.7"
 gem "open-uri"
