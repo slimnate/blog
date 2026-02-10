@@ -1,7 +1,7 @@
 ---
 title: Valheim Backup
 categories: [Software]
-tags: [software, valheim, c-sharp]
+tags: [valheim, c-sharp]
 pin: false
 ---
 

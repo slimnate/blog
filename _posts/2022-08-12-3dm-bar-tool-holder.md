@@ -2,7 +2,7 @@
 title: 3D Model Gallery - Bartender Tool Holder
 date: 2022-08-12 12:02:00 -0500
 categories: [Portfolio]
-tags: [3d models, 3d printing, gallery, portfolio]
+tags: [3d-models, 3d-printing]
 mermaid: true # enable mermaid charts
 pin: false
 image: # article header image

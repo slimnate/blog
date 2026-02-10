@@ -2,7 +2,7 @@
 title: Snake Tank Pt. 5 - Mobile App
 date: 2021-04-14 12:05:00 -0500
 categories: [Projects]
-tags: [arduino, programming, cpp]
+tags: [flutter, dart, mobile-app]
 mermaid: true # enable mermaid charts
 pin: false
 image: # article header image
