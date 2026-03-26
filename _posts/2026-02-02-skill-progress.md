@@ -10,13 +10,13 @@ image:
 
 # Introduction
 
-Like many developers before, I recently found myself on a quest to create a kick-ass GitHub readme that showcases all of my skills and projects in the cleanest, coolest way possible. As part of this, I included icons from the [skill-icons](https://github.com/tandpfun/skill-icons) project to showcase my different skills. But in pursuit of perfection, a simple list of icons will not do - I wanted a visual indicator of how proficient I was in each skill. Thus was born [skill-progress](https://github.com/slimnate/skill-progress) - A simple single-route microservice that generates a progress bar to showcase skill proficiency anywhere on the web. The service provides a simple API that augments any image with a progress bar that represents a skill level from 1-5.
+Like many developers before, I recently found myself on a quest to create a kick-ass GitHub readme that showcases all of my skills and projects in the cleanest, coolest way possible. As part of this, I included icons from the [skill-icons](https://github.com/tandpfun/skill-icons) project to showcase my different skills. But in pursuit of perfection, a simple list of icons will not do - I wanted a visual indicator of how proficient I was in each skill. Thus was born [skill-progress](https://skillprogress.dev/) ([github](https://github.com/slimnate/skill-progress)) - A simple microservice that generates a progress bar to showcase skill proficiency anywhere on the web. The service provides a simple API that augments any image with a progress bar that represents a skill level from 1-5.
 
 ![Preview](/assets/img/skill-progress/01-preview.png)
 
 # Inspiration
 
-While I found **skill-icons** to be a great way to showcase my skills, I wanted to add a little bit more of my own touch - visual indicator of proficiency level in each technology. I decided on a progress bar below the image, originally inspired by [this linear progress component](https://github.com/harish-sethuraman/readme-components?tab=readme-ov-file#linear-progress), but wanted to integrate it more seamlessly with the skill icon.
+While I found **skill-icons** to be a great way to showcase my skills, I wanted to add a little bit more of my own touch - a visual indicator of proficiency level in each technology. I decided on a progress bar below the image, originally inspired by [this linear progress component](https://github.com/harish-sethuraman/readme-components?tab=readme-ov-file#linear-progress), but wanted to integrate it more seamlessly with the skill icon.
 
 I initially created a set of progress bar SVGs that stepped from 1-5 and experimented with laying them out in html inside of a README. Due to the limitations of HTML/CSS in Markdown, however, this solution proved futile. Even if I got that working, it would mean adding tons of layout code for each one of the skill icons. I wanted something more elegant, more flexible.
 
@@ -46,9 +46,11 @@ While the idea of a microservice that generates content for GitHub readmes is no
 - **[SVG](https://developer.mozilla.org/en-US/docs/Web/SVG)** format for scalable graphics with low overhead and no need to use external image processing libraries.
 - **[skill-icons](https://github.com/tandpfun/skill-icons)** for base skill set, since I like the way they look
 
-## Why Netlify
+## Why ~~Netlify~~ Railway
 
-The biggest reason I chose to use Netlify for production deployment is that I am already very familiar with the platform and already have several production sites deployed there. They provide a generous free tier, automatic scaling, continuous deployment by connecting directly to my GitHub repo, and easy deployments of serverless functions.
+~~The biggest reason I chose to use Netlify for production deployment is that I am already very familiar with the platform and already have several production sites deployed there. They provide a generous free tier, automatic scaling, continuous deployment by connecting directly to my GitHub repo, and easy deployments of serverless functions.~~
+
+After writing the first revision of this article, I encountered issues using Netlify functions for this service, mainly performance. Netlify containers do not persist state between requests, and a cold start means slower responses and renders my in-memory cache (discussed later) useless. I switched to a Railway app, since it is always up and has persistent RAM. This does mean I now have to pay for hosting, but the $5 introductory tier should be more than enough for this service right now. I also enjoyed the chance to gain experience with a new hosting platform.
 
 # API design
 
@@ -60,7 +62,7 @@ The following parameters are provided for customizing the output of the `/progre
 |------------|----------|-------------|
 | `skill`    | one of   | skill-icons name (js, ts, react, etc.) This can be one of the [official skill icons](https://github.com/tandpfun/skill-icons?tab=readme-ov-file#icons-list), or one of the [custom skill icons](https://github.com/slimnate/skill-progress?tab=readme-ov-file#custom-skill-icons) provided by this service |
 | `image`    | one of   | Custom image URL |
-| `level`    | yes      | 1–5 proficiency level |
+| `level`    | no       | 1–5 proficiency level (if not supplied, the service returns the requested image with no progress bar) |
 | `size`     | no       | 16–512px, default 48px |
 | `style`    | no       | rounded (default) or flat |
 | `startColor` | no     | Gradient start (hex, no leading #) |
@@ -72,24 +74,24 @@ The following parameters are provided for customizing the output of the `/progre
 #### Basic example
 
 ```
-https://skill-progress.netlify.app/.netlify/functions/progress?skill=js&level=4
+https://skillprogress.dev/progress?skill=js&level=4
 ```
 
-Output: ![JavaScript – level 4](https://skill-progress.netlify.app/.netlify/functions/progress?skill=js&level=4)
+Output: ![JavaScript – level 4](https://skillprogress.dev/progress?skill=js&level=4)
 
 #### Custom image
 
 ```
-https://skill-progress.netlify.app/.netlify/functions/progress?image=<some_image_url>&level=4
+https://skillprogress.dev/progress?image=<some_image_url>&level=4
 ```
 
 #### Styled example
 
 ```
-https://skill-progress.netlify.app/.netlify/functions/progress?skill=convex&level=4&size=96&startColor=667eea&endColor=764ba2
+https://skillprogress.dev/progress?skill=convex&level=4&size=96&startColor=667eea&endColor=764ba2
 ```
 
-Output: ![Convex - Styled](https://skill-progress.netlify.app/.netlify/functions/progress?skill=convex&level=4&size=96&startColor=667eea&endColor=764ba2)
+Output: ![Convex - Styled](https://skillprogress.dev/progress?skill=convex&level=4&size=96&startColor=667eea&endColor=764ba2)
 
 # Implementation Highlights
 
@@ -99,8 +101,15 @@ The internal image generation code generates an SVG tag that embeds both the sou
 
 Handling of custom colors involves a string replace of the original gradient colors with the custom color stops if provided. This method is not ideal, I think eventually I want the progress bars to be generated in code entirely, and just use string interpolation of provided gradient color stops, progress bar size, and other customizable properties for the progress bar.
 
-Sizing is handled by first generating the final image at a size of 48, parsing the result using `xmldom` library, resizing, and then converting back to a string.
+~~Sizing is handled by first generating the final image at a size of 48, parsing the result using `xmldom` library, resizing, and then converting back to a string.~~
 
+After publishing the first version of this article, I did some profiling and made some performance improvements based on the results. The main performance issue was using the `xmldom` parser library, when my desired result could be acheived with simple string replacement operations. Now the skill images are stored as a custom `SVG` object that simply wraps an svg string with some helper methods:
+- `sanitize()` - removes any xml headers
+- `setAttribute(name, value)` - Replace an arbitrary attribute value (used for size currently)
+- `replaceColor(oldColor, newColor)` - Replace a hex color in the source with a new one
+
+
+### New generate function
 ```ts
 /**
  * Generate the progress SVG for a given skill and level
@@ -114,28 +123,65 @@ const generateProgressSvg = (
     style: string,
     size: number,
     startColor: string | undefined,
-    endColor: string | undefined
+    endColor: string | undefined,
 ): string => {
     const levelSvg = getLevelSvg(level, style, startColor, endColor);
 
     const imageData = skillImage.mimeType.includes('image/svg+xml')
-        ? `<g transform="translate(0, 0)">${skillImage.data as SVGElement}</g>`
+        ? `<g transform="translate(0, 0)">${skillImage.data}</g>`
         : `<image href="data:${skillImage.mimeType};base64,${skillImage.data}" width="48" height="48" />`;
 
-    const levelData = `<g transform="translate(0, 48)">${levelSvg}</g>`;
+    const levelData = levelSvg
+        ? `<g transform="translate(0, 48)">${levelSvg}</g>`
+        : '';
 
     const svgData = `
-        <svg width="48px" height="48px" viewBox="0 0 48 56" xmlns="http://www.w3.org/2000/svg">
+        <svg width="48px" height="48px" viewBox="0 0 48 ${levelSvg ? '56' : '48'}" xmlns="http://www.w3.org/2000/svg">
             ${imageData}
             ${levelData}
         </svg>
     `;
 
-    return resizeSvg(svgData, size);
+    const resizedSvg = resizeSvg(svgData, size);
+    return resizedSvg;
 };
 
-export { generateProgressSvg };
+```
 
+### SVG Wrapper
+
+```ts
+class SVG {
+    constructor(private source: string) {
+        this.source = this.sanitize(source);
+    }
+
+    sanitize(string: string): string {
+        return string.replace(/<\?xml.*\?>/g, '');
+    }
+
+    setAttribute(name: string, value: string): void {
+        this.source = this.source.replace(
+            new RegExp(`${name}=".*?"`),
+            `${name}="${value}"`,
+        );
+    }
+
+    replaceColor(oldColor: string, newColor: string): void {
+        const normalizedOldColor = oldColor.replace(/^#/, '');
+        const normalizedNewColor = newColor.replace(/^#/, '');
+        this.source = this.source.replace(
+            new RegExp(`#${normalizedOldColor}\\b`, 'gi'),
+            `#${normalizedNewColor}`,
+        );
+    }
+
+    toString(): string {
+        return this.source;
+    }
+}
+
+export { SVG };
 ```
 
 ## Custom icons
@@ -196,9 +242,7 @@ Future considerations for this functionality are:
 
 # Real World Usage
 
-This project is currently used on my [GitHub profile readme](https://github.com/slimnate)
-
-I plan to use this project in my portfolio website as well when I get that project started ([nathanhoyt.dev](https://nathanhoyt.dev))
+This project is currently used on my [GitHub profile readme](https://github.com/slimnate) as well as my developer portfolio - ([nathanhoyt.dev](https://nathanhoyt.dev))
 
 # Lessons and Takeaways
 
@@ -209,7 +253,7 @@ I plan to use this project in my portfolio website as well when I get that proje
 **SVG Output** - Using SVG as the output format worked great for several reasons:
 - Lightweight code, no image decoding, rasterization, etc.
 - Easy compositing of source images, even raster images by simply embedding them in the SVG output.
-- Control over image properties using `xmldom` library to parse and modify SVG properties.
+- Control over image properties using ~~`xmldom` library~~ string manipulation and simple `SVG` wrapper to parse and modify SVG properties.
 
 **skill-icons CDN** - The skill-icons CDN provides a great starter source for icon images, and using that in conjunction with custom icons and arbitrary image URLs allows for maximum customization while maintaining a low barrier to entry.
 
@@ -232,15 +276,15 @@ Done:
 - [x] Custom output size (generate at 48×48 then resize)
 - [x] Cache skill-icons
 - [x] Native support for [simple-icons](https://github.com/simple-icons/simple-icons)
+- [x] Skill level optional. (for generating icon without a progress bar at all - this could allow people to contribute icons to my library since the skill-icons maintainers no longer accept new icons)
+- [x] Base route should redirect to project homepage on GitHub instead of 404 - project now has a full frontend with landing page and URL builder form
 
 New Features:
-- [ ] Skill level 0? (potential use case is for generating icon without a progress bar at all - this could allow people to contribute icons to my library since the skill-icons maintainers no longer accept new icons)
 - [ ] Add more custom icons (can scrape the PRs on the skill-icons repo and add all the icons that the maintainer won't accept on that project)
 - [ ] Allow for labels and use of emojis as progress bar (https://stackoverflow.com/questions/24768630/is-there-a-way-to-show-a-progressbar-on-github-wiki/61857070#61857070)
 - [ ] Generate SVGs from scratch so that any percentage can be used, instead of just the 1-5 steps.
 - [ ] Add support for additional input image types (webp, etc.)
 - [ ] Vertical progress bar option (to left/right of image).
-- [ ] Base route should redirect to project homepage on GitHub instead of 404
 
 Cache:
 - [ ] Store expiration time of cache instead of calculating on every request.
