@@ -10,7 +10,7 @@ image:
 
 # Introduction
 
-Like many developers before, I recently found myself on a quest to create a kick-ass GitHub readme that showcases all of my skills and projects in the cleanest, coolest way possible. As part of this, I included icons from the [skill-icons](https://github.com/tandpfun/skill-icons) project to showcase my different skills. But in pursuit of perfection, a simple list of icons will not do - I wanted a visual indicator of how proficient I was in each skill. Thus was born [skill-progress](https://skillprogress.dev/) ([github](https://github.com/slimnate/skill-progress)) - A simple microservice that generates a progress bar to showcase skill proficiency anywhere on the web. The service provides a simple API that augments any image with a progress bar that represents a skill level from 1-5.
+Like many developers, I recently found myself on a quest to create a kick-ass GitHub README that showcases all of my skills and projects in the cleanest, coolest way possible. As part of this, I included icons from the [skill-icons](https://github.com/tandpfun/skill-icons) project to showcase my different skills. But in pursuit of perfection, a simple list of icons will not do - I wanted a visual indicator of how proficient I was in each skill. Thus was born [skill-progress](https://skillprogress.dev/) ([github](https://github.com/slimnate/skill-progress)) - a simple microservice that generates a progress bar to showcase skill proficiency anywhere on the web. The service provides a simple API that augments any image with a progress bar that represents a skill level from 1-5.
 
 ![Preview](/assets/img/skill-progress/01-preview.png)
 
@@ -18,15 +18,15 @@ Like many developers before, I recently found myself on a quest to create a kick
 
 While I found **skill-icons** to be a great way to showcase my skills, I wanted to add a little bit more of my own touch - a visual indicator of proficiency level in each technology. I decided on a progress bar below the image, originally inspired by [this linear progress component](https://github.com/harish-sethuraman/readme-components?tab=readme-ov-file#linear-progress), but wanted to integrate it more seamlessly with the skill icon.
 
-I initially created a set of progress bar SVGs that stepped from 1-5 and experimented with laying them out in html inside of a README. Due to the limitations of HTML/CSS in Markdown, however, this solution proved futile. Even if I got that working, it would mean adding tons of layout code for each one of the skill icons. I wanted something more elegant, more flexible.
+I initially created a set of progress bar SVGs that stepped from 1-5 and experimented with laying them out in HTML inside of a README. Due to the limitations of HTML/CSS in Markdown, however, this solution proved futile. Even if I got that working, it would mean adding tons of layout code for each one of the skill icons. I wanted something more elegant, more flexible.
 
-While the idea of a microservice that generates content for GitHub readmes is nothing new (there are tons of GitHub readme [icon](https://github.com/tandpfun/skill-icons)/[label](https://shields.io/badges/static-badge)/[progress](https://github.com/harish-sethuraman/readme-components?tab=readme-ov-file#linear-progress)/[stats](https://github.com/anuraghazra/github-readme-stats)/etc generators), I was unable to find any existing solutions that provided exactly what I wanted:
+While the idea of a microservice that generates content for GitHub README's is nothing new (there are tons of GitHub README [icon](https://github.com/tandpfun/skill-icons)/[label](https://shields.io/badges/static-badge)/[progress](https://github.com/harish-sethuraman/readme-components?tab=readme-ov-file#linear-progress)/[stats](https://github.com/anuraghazra/github-readme-stats)/etc generators), I was unable to find any existing solutions that provided exactly what I wanted:
 
 - Drop-in replacement for the skill icons service - a url that returns an image
 - Native support for the official **skill-icons** as well as my own custom skill icons and any other arbitrary images
 - Configurable: icon, size, progress level, colors, styles, etc.
 - Hosted as a microservice with no client side build steps
-- Compatible with GitHub readme or HTML on a website (I plan to use this feature in my portfolio website - [nathanhoyt.dev](https://nathanhoyt.dev/))
+- Compatible with GitHub README or HTML on a website (I plan to use this feature in my portfolio website - [nathanhoyt.dev](https://nathanhoyt.dev/))
 
 # Architecture and Tech Stack
 
@@ -41,8 +41,9 @@ While the idea of a microservice that generates content for GitHub readmes is no
 
 ## Tech Choices
 - **[TypeScript](https://www.typescriptlang.org/)** for type safety and tooling ecosystem
-- **[Express](https://expressjs.com/)** for local development or deployment to standard web server.
-- **[Netlify Functions](https://www.netlify.com/platform/core/functions/)** for serverless deployment, since I already use Netlify for most of my other publicly hosted projects.
+- **[Express](https://expressjs.com/)** for local development or deployment to a standard web server.
+- ~~**[Netlify Functions](https://www.netlify.com/platform/core/functions/)** for serverless deployment, since I already use Netlify for most of my other publicly hosted projects.~~
+- [Railway](https://railway.com/) for public hosting, Netlify Functions has limitations not compatible with this project.
 - **[SVG](https://developer.mozilla.org/en-US/docs/Web/SVG)** format for scalable graphics with low overhead and no need to use external image processing libraries.
 - **[skill-icons](https://github.com/tandpfun/skill-icons)** for base skill set, since I like the way they look
 
@@ -93,17 +94,27 @@ https://skillprogress.dev/progress?skill=convex&level=4&size=96&startColor=667ee
 
 Output: ![Convex - Styled](https://skillprogress.dev/progress?skill=convex&level=4&size=96&startColor=667eea&endColor=764ba2)
 
+# Frontend
+
+As part of this project, I also added a frontend web app with a landing page and URL builder. Check it out at [skillprogress.dev](https://skillprogress.dev/). The landing page gives a quick overview of what the service does and shows a list of the available custom icons. The builder page lets users fill out a form to generate a live preview and a copyable URL.
+
+## Frontend Tech Stack
+The frontend app uses React, TypeScript, and Vite for build and live dev previews. It uses React Router for SPA routing with two routes: `/` and `/builder`. The frontend UI is intentionally lightweight and minimal with no databases, auth, or heavy UI libraries (aside from React, which might be a bit overkill in this instance)
+
+## URL Builder
+The builder page is a simple form with a live image preview and an auto generated link that can be copied and pasted into a README or used as an image source on a website. The builder contains a field for each parameter supported by the service. The skill field has filtering and search, with icon previews in each list element.
+
 # Implementation Highlights
 
 ## SVG Composition
 
 The internal image generation code generates an SVG tag that embeds both the source image and the progress bar. For the source layer, it directly embeds the SVG element for an SVG, or an embedded image in the SVG for a raster image. For the progress bar, the SVG is always directly embedded since all progress bars are guaranteed to be an SVG.
 
-Handling of custom colors involves a string replace of the original gradient colors with the custom color stops if provided. This method is not ideal, I think eventually I want the progress bars to be generated in code entirely, and just use string interpolation of provided gradient color stops, progress bar size, and other customizable properties for the progress bar.
+Handling of custom colors involves a string replace of the original gradient colors with the custom color stops if provided. This method is not ideal. I think eventually I want the progress bars to be generated in code entirely, and just use string interpolation of provided gradient color stops, progress bar size, and other customizable properties for the progress bar.
 
 ~~Sizing is handled by first generating the final image at a size of 48, parsing the result using `xmldom` library, resizing, and then converting back to a string.~~
 
-After publishing the first version of this article, I did some profiling and made some performance improvements based on the results. The main performance issue was using the `xmldom` parser library, when my desired result could be acheived with simple string replacement operations. Now the skill images are stored as a custom `SVG` object that simply wraps an svg string with some helper methods:
+After publishing the first version of this article, I did some profiling and made some performance improvements based on the results. The main performance issue was using the `xmldom` parser library, when my desired result could be achieved with simple string replacement operations. Now the skill images are stored as a custom `SVG` object that simply wraps an svg string with some helper methods:
 - `sanitize()` - removes any xml headers
 - `setAttribute(name, value)` - Replace an arbitrary attribute value (used for size currently)
 - `replaceColor(oldColor, newColor)` - Replace a hex color in the source with a new one
@@ -186,13 +197,13 @@ export { SVG };
 
 ## Custom icons
 
-One big benefit of this library over using the original skill-icons library is that I have full control over what custom icons are included in the project. Since the maintainers of skill-icons have stopped accepting PRs (or perhaps never did) for new icons - and have not updated the repo in years - this project allows me to have even better functionality, while also giving me the ability to create and accept submissions of new icons myself.
+One big benefit of this library over using the original skill-icons library is that I have full control over what custom icons are included in the project. Since the maintainers of skill-icons have stopped accepting PRs (or perhaps never accepted any) for new icons - and have not updated the repo in years - this project allows me to have even better functionality, while also giving me the ability to create and accept submissions of new icons myself.
 
 So far I have added the convex logo to this project, since it was one of the main skills I wanted to showcase. I may at some point go through the [PRs on skill-icons](https://github.com/tandpfun/skill-icons/pulls) and add the icons users have submitted there. (Maybe write a script to scrape them automatically)
 
 ## Caching and performance
 
-I implemented super basic in-memory caching of remote URLs by simply saving the data returned to a HashMap. Each time a request comes in, the application first checks the cache for the image URL, and then validates that the cached results are not stale. If the cache entry's age is less than the TTL (24 hours currently) then the cached result is returned, otherwise the cache entry is removed, and a new one is created after fetching new data from the remote URL
+I implemented super basic in-memory caching of remote URLs by simply saving the data returned to a HashMap. Each time a request comes in, the application first checks the cache for the image URL, and then validates that the cached results are not stale. If the cache entry's age is less than the TTL (24 hours currently) then the cached result is returned, otherwise the cache entry is removed, and a new one is created after fetching new data from the remote URL.
 
 ```ts
 class CacheEntry {
@@ -238,11 +249,11 @@ const fetchWithCache = async (
 Future considerations for this functionality are:
 - Ensuring that stale cache entries are removed after expiring, via some sort of garbage collection functionality
 - Ensuring that cache does not balloon and consume too much memory, crashing the application.
-- Evaluate real-world performance improvements, and optimal TTL value. Also not sure if this is an effective caching method when using serverless functions - further research needed.
+- Evaluate real-world performance improvements, and optimal TTL value.
 
 # Real World Usage
 
-This project is currently used on my [GitHub profile readme](https://github.com/slimnate) as well as my developer portfolio - ([nathanhoyt.dev](https://nathanhoyt.dev))
+This project is currently used on my [GitHub profile README](https://github.com/slimnate) as well as my developer portfolio - ([nathanhoyt.dev](https://nathanhoyt.dev)).
 
 # Lessons and Takeaways
 
@@ -253,7 +264,7 @@ This project is currently used on my [GitHub profile readme](https://github.com/
 **SVG Output** - Using SVG as the output format worked great for several reasons:
 - Lightweight code, no image decoding, rasterization, etc.
 - Easy compositing of source images, even raster images by simply embedding them in the SVG output.
-- Control over image properties using ~~`xmldom` library~~ string manipulation and simple `SVG` wrapper to parse and modify SVG properties.
+- Control over image properties using ~~`xmldom` library~~ string manipulation and simple `SVG` wrapper to modify SVG properties.
 
 **skill-icons CDN** - The skill-icons CDN provides a great starter source for icon images, and using that in conjunction with custom icons and arbitrary image URLs allows for maximum customization while maintaining a low barrier to entry.
 
@@ -261,7 +272,7 @@ This project is currently used on my [GitHub profile readme](https://github.com/
 
 **SVG composition** - Supporting multiple image formats required me to work through the problem of decoding the mime type and base64 encoding the image data.
 
-**Supporting both express and netlify in one codebase** - Since express is an HTTP server built in JS, and Netlify functions are serverless, the two don't exactly integrate seamlessly. However, I was able to get an implementation that would deploy correctly as a netlify serverless function or as an express server by decoupling the request handler from the server code, and then calling the handler from either the express handler function or the netlify function, with a little bit different syntax for each.
+**Supporting both express and netlify in one codebase** - Since express is an HTTP server built in JS, and Netlify functions are serverless, the two don't exactly integrate seamlessly. However, I was able to get an implementation that would deploy correctly as a netlify serverless function or as an express server by decoupling the request handler from the server code, and then calling the handler from either the express handler function or the Netlify function, with a little bit different syntax for each.
 
 ## Reusable Patterns
 
